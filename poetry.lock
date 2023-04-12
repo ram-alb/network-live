@@ -81,6 +81,22 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "enm-client-scripting"
+version = "1.22.2"
+description = "ENM python scripting support library"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+requests = "2.6.0"
+six = "1.9.0"
+
+[package.source]
+type = "file"
+url = "../local_packages/enm_client_scripting-1.22.2-py2.py3-none-any.whl"
+
+[[package]]
 name = "eradicate"
 version = "2.2.0"
 description = "Removes commented-out code."
@@ -487,6 +503,17 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "requests"
+version = "2.6.0"
+description = "Python HTTP for Humans."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+security = ["ndg-httpsclient", "pyOpenSSL", "pyasn1"]
+
+[[package]]
 name = "restructuredtext-lint"
 version = "1.4.0"
 description = "reStructuredText linter"
@@ -512,6 +539,14 @@ typing-extensions = {version = ">=4.0.0,<5.0", markers = "python_version < \"3.9
 
 [package.extras]
 jupyter = ["ipywidgets (>=7.5.1,<9)"]
+
+[[package]]
+name = "six"
+version = "1.9.0"
+description = "Python 2 and 3 compatibility utilities"
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "smmap"
@@ -588,7 +623,7 @@ typing_extensions = ">=4.0,<5.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "610886eb8d1cc6efaa97e4de8f99fe19f1416b371298bf609029c183433db53e"
+content-hash = "b52e1f0df2d499fa3e66069cf4801e1ade7c035c60ab08c002bed31c73298415"
 
 [metadata.files]
 astor = [
@@ -667,6 +702,9 @@ darglint = [
 docutils = [
     {file = "docutils-0.19-py3-none-any.whl", hash = "sha256:5e1de4d849fee02c63b040a4a3fd567f4ab104defd8a5511fbbc24a8a017efbc"},
     {file = "docutils-0.19.tar.gz", hash = "sha256:33995a6753c30b7f577febfc2c50411fec6aac7f7ffeb7c4cfe5991072dcf9e6"},
+]
+enm-client-scripting = [
+    {file = "enm_client_scripting-1.22.2-py2.py3-none-any.whl", hash = "sha256:5a38b10c5b63f188bba4cc9a7ec449fd155346fab866436a890f1623e1b12f5f"},
 ]
 eradicate = [
     {file = "eradicate-2.2.0-py3-none-any.whl", hash = "sha256:751813c315a48ce7e3d0483410991015342d380a956e86e0265c61bfb875bcbc"},
@@ -845,12 +883,20 @@ PyYAML = [
     {file = "PyYAML-6.0-cp39-cp39-win_amd64.whl", hash = "sha256:b3d267842bf12586ba6c734f89d1f5b871df0273157918b0ccefa29deb05c21c"},
     {file = "PyYAML-6.0.tar.gz", hash = "sha256:68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"},
 ]
+requests = [
+    {file = "requests-2.6.0-py2.py3-none-any.whl", hash = "sha256:fdb9af60d47ca57a80df0a213336019a34ff6192d8fff361c349f2c8398fe460"},
+    {file = "requests-2.6.0.tar.gz", hash = "sha256:1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"},
+]
 restructuredtext-lint = [
     {file = "restructuredtext_lint-1.4.0.tar.gz", hash = "sha256:1b235c0c922341ab6c530390892eb9e92f90b9b75046063e047cacfb0f050c45"},
 ]
 rich = [
     {file = "rich-13.3.3-py3-none-any.whl", hash = "sha256:540c7d6d26a1178e8e8b37e9ba44573a3cd1464ff6348b99ee7061b95d1c6333"},
     {file = "rich-13.3.3.tar.gz", hash = "sha256:dc84400a9d842b3a9c5ff74addd8eb798d155f36c1c91303888e0a66850d2a15"},
+]
+six = [
+    {file = "six-1.9.0-py2.py3-none-any.whl", hash = "sha256:418a93c397a7edab23e5588dbc067ac74a723edb3d541bd4936f79476e7645da"},
+    {file = "six-1.9.0.tar.gz", hash = "sha256:e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"},
 ]
 smmap = [
     {file = "smmap-5.0.0-py3-none-any.whl", hash = "sha256:2aba19d6a040e78d8b09de5c57e96207b09ed71d8e55ce0959eeee6c8e190d94"},
