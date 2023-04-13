@@ -15,7 +15,7 @@ def enm_main(enm, technology, atoll_data):
     Returns:
         list: a list of dictionaries containing cell parameters
     """
-    if technology == 'lte':
+    if technology == 'LTE':
 
         enm_enbids = EnmCli.execute_cli_command(enm, 'enodeb_id')
         enbids = parse_node_parameter(enm_enbids, 'MeContext')

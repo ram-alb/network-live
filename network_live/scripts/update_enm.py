@@ -6,11 +6,10 @@ load_dotenv()
 
 def update_enm1_lte():
     """Update Network Live with ENM1 lte cells."""
-    print(update_enm('ENM1', 'lte'))
+    print(update_enm('ENM1', 'LTE'))
 
 
 def update_enm2_lte():
     """Update Network Live with ENM2 lte cells."""
-    cells = update_enm('ENM2', 'lte')
+    cells = update_enm('ENM2', 'LTE')
     print(cells)
-    print(len(cells[0].keys()))

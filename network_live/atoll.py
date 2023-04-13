@@ -95,10 +95,10 @@ def select_atoll_data(technology):
     """
 
     sql_selects = {
-        'lte': lte_select,
-        'wcdma': wcdma_select,
-        'gsm': gsm_select,
-        'nr': nr_select,
+        'LTE': lte_select,
+        'WCDMA': wcdma_select,
+        'GSM': gsm_select,
+        'NR': nr_select,
     }
 
     return handle_atoll_data(execute_sql('select', sql_selects[technology]))

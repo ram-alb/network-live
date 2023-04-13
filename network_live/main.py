@@ -1,5 +1,6 @@
 from network_live.atoll import select_atoll_data
 from network_live.enm.enm_main import enm_main
+from network_live.sql import update_network_live
 
 
 def update_enm(enm, technology):
@@ -14,4 +15,5 @@ def update_enm(enm, technology):
         dict
     """
     atoll_physical_params = select_atoll_data(technology)
-    return enm_main(enm, technology, atoll_physical_params)
+    cells = enm_main(enm, technology, atoll_physical_params)
+    return update_network_live(cells, enm, technology)
