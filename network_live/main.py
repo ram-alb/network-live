@@ -1,4 +1,4 @@
-from network_live.atoll import select_atoll_data
+from network_live.sql import select_atoll_data
 from network_live.enm.enm_main import enm_main
 from network_live.sql import update_network_live
 
