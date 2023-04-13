@@ -38,9 +38,9 @@ class EnmCli(object):
         Returns:
             str: the response from the ENM after executing the CLI command
         """
-        if enm_number == 'enm1':
+        if enm_number == 'ENM1':
             enm_server = os.getenv('ENM_SERVER_1')
-        elif enm_number == 'enm2':
+        elif enm_number == 'ENM2':
             enm_server = os.getenv('ENM_SERVER_2')
 
         session = enmscripting.open(enm_server).with_credentials(

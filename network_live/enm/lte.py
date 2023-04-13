@@ -1,6 +1,7 @@
 from datetime import date
 
 from network_live.enm.utils import parse_fdn
+from network_live.physical_params import add_physical_params
 
 
 def calculate_eci(enodeb_id, cell_id):
@@ -20,7 +21,13 @@ def calculate_eci(enodeb_id, cell_id):
     return int_enodeb_id * eci_factor + int_cell_id
 
 
-def parse_lte_cells_params(enm_lte_cells, enodeb_ids, node_ips):
+def parse_lte_cells_params(
+    enm_lte_cells,
+    enodeb_ids,
+    node_ips,
+    atoll_data,
+    enm,
+):
     """
     Parse the parameters for all LTE cells.
 
@@ -28,6 +35,8 @@ def parse_lte_cells_params(enm_lte_cells, enodeb_ids, node_ips):
         enm_lte_cells (tuple): a tuple of ElementGroups for LTE
         enodeb_ids (dict): a dictionary of eNodeB IDs keyed by site name
         node_ips (dict): a dictionary of IP addresses keyed by site name
+        atoll_data (dict): a dict of cell physical params
+        enm (str): an ENM server number
 
     Returns:
         list: a list of dicts containing the parameters for each LTE cell
@@ -42,6 +51,7 @@ def parse_lte_cells_params(enm_lte_cells, enodeb_ids, node_ips):
                 'site_name': site_name,
                 'cell_name': parse_fdn(element_val, 'EUtranCellFDD'),
                 'vendor': 'Ericsson',
+                'oss': enm,
                 'insert_date': date.today(),
             }
         elif ' : ' in element_val:
@@ -51,7 +61,7 @@ def parse_lte_cells_params(enm_lte_cells, enodeb_ids, node_ips):
                 cell['enodeb_id'] = enodeb_ids[site_name]
                 cell['eci'] = calculate_eci(cell['enodeb_id'], cell['cellId'])
                 cell['ip_address'] = node_ips[site_name]
-                lte_cells.append(cell)
+                lte_cells.append(add_physical_params(atoll_data, cell))
             else:
                 cell[attr_name] = attr_value
     return lte_cells

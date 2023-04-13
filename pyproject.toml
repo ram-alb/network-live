@@ -10,10 +10,12 @@ packages = [{include = "network_live"}]
 python = "^3.8"
 python-dotenv = "^1.0.0"
 enm-client-scripting = {path = "../local_packages/enm_client_scripting-1.22.2-py2.py3-none-any.whl"}
+cx-Oracle = "^8.3.0"
 
 [tool.poetry.scripts]
-update-enm1-lte = "network_live.scripts.update_enm_lte:main_enm1"
-update-enm2-lte = "network_live.scripts.update_enm_lte:main_enm2"
+update-enm1-lte = "network_live.scripts.update_enm:update_enm1_lte"
+update-enm2-lte = "network_live.scripts.update_enm:update_enm2_lte"
+select-atoll = "network_live.scripts.update_enm_lte:main_atoll"
 
 [tool.poetry.group.dev.dependencies]
 wemake-python-styleguide = "^0.17.0"
