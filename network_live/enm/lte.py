@@ -4,6 +4,26 @@ from network_live.enm.utils import parse_fdn
 from network_live.physical_params import add_physical_params
 
 
+def get_extra_data(site_name, node_ids, node_ips):
+    """
+    Return a dictionary with extra data for a given cell.
+
+    Args:
+        site_name (str): a site name
+        node_ids (dict): a dict with gNodeB IDs
+        node_ips (dict): a dict with node IP addresses
+
+    Returns:
+        dict: a dict with extra data for the cell
+    """
+    return {
+        'enodeb_id': node_ids[site_name],
+        'ip_address': node_ips[site_name],
+        'vendor': 'Ericsson',
+        'insert_date': date.today(),
+    }
+
+
 def calculate_eci(enodeb_id, cell_id):
     """
     Calculate the E-UTRAN Cell Identifier (ECI) for an LTE cell.
@@ -21,22 +41,16 @@ def calculate_eci(enodeb_id, cell_id):
     return int_enodeb_id * eci_factor + int_cell_id
 
 
-def parse_lte_cells_params(
-    enm_lte_cells,
-    enodeb_ids,
-    node_ips,
-    atoll_data,
-    enm,
-):
+def parse_lte_cells(enm, enm_lte_cells, last_parameter, atoll_data, *args):
     """
     Parse the parameters for all LTE cells.
 
     Args:
-        enm_lte_cells (tuple): a tuple of ElementGroups for LTE
-        enodeb_ids (dict): a dictionary of eNodeB IDs keyed by site name
-        node_ips (dict): a dictionary of IP addresses keyed by site name
-        atoll_data (dict): a dict of cell physical params
         enm (str): an ENM server number
+        enm_lte_cells (tuple): a tuple of ElementGroups for LTE cells
+        last_parameter (str): the name of the last parameter to parse for cells
+        atoll_data (dict): a dict of cell physical params
+        args (list): a list of extra data sourses
 
     Returns:
         list: a list of dicts containing the parameters for each LTE cell
@@ -46,22 +60,18 @@ def parse_lte_cells_params(
         element_val = element.value()
         if 'FDN' in element_val:
             site_name = parse_fdn(element_val, 'MeContext')
+            extra_data = get_extra_data(site_name, *args)
             cell = {
                 'subnetwork': parse_fdn(element_val, 'SubNetwork'),
                 'site_name': site_name,
                 'cell_name': parse_fdn(element_val, 'EUtranCellFDD'),
-                'vendor': 'Ericsson',
                 'oss': enm,
-                'insert_date': date.today(),
+                **extra_data,
             }
         elif ' : ' in element_val:
             attr_name, attr_value = element_val.split(' : ')
-            if attr_name == 'tac':
-                cell['tac'] = attr_value
-                cell['enodeb_id'] = enodeb_ids[site_name]
+            cell[attr_name] = attr_value
+            if attr_name == last_parameter:
                 cell['eci'] = calculate_eci(cell['enodeb_id'], cell['cellId'])
-                cell['ip_address'] = node_ips[site_name]
                 lte_cells.append(add_physical_params(atoll_data, cell))
-            else:
-                cell[attr_name] = attr_value
     return lte_cells

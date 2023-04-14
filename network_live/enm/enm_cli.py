@@ -6,7 +6,23 @@ import enmscripting
 class EnmCli(object):
     """Handle the execution of CLI commands on an Ericsson ENM server."""
 
-    eutrancell_params = [
+    nr_cell_params = [
+        'cellLocalId',
+        'cellState',
+        'nCI',
+        'nRPCI',
+        'nRTAC',
+        'qRxLevMin',
+        'rachRootSequence',
+    ]
+
+    nr_sector_params = [
+        'arfcnDL',
+        'bSChannelBwDL',
+        'configuredMaxTxPower',
+    ]
+
+    lte_cell_params = [
         'administrativeState',
         'cellId',
         'earfcndl',
@@ -18,8 +34,15 @@ class EnmCli(object):
     ]
 
     cli_commands = {
+        'nr_cells': 'cmedit get * NRCellDU.({params})'.format(
+            params=','.join(nr_cell_params),
+        ),
+        'nr_sectors': 'cmedit get * NRSectorCarrier.({params})'.format(
+            params=','.join(nr_sector_params),
+        ),
+        'gnbid': 'cmedit get * GNBDUFunction.(gNBId)',
         'lte_cells': 'cmedit get * EutranCellFdd.({params})'.format(
-            params=','.join(eutrancell_params),
+            params=','.join(lte_cell_params),
         ),
         'enodeb_id': 'cmedit get * ENodeBFunction.(enbid)',
         'bbu_ip': 'cmedit get * AddressIPv4.(address)',

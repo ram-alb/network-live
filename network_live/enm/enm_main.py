@@ -1,5 +1,6 @@
 from network_live.enm.enm_cli import EnmCli
-from network_live.enm.lte import parse_lte_cells_params
+from network_live.enm.lte import parse_lte_cells
+from network_live.enm.nr5g import parse_nr_cells, parse_nr_sectors
 from network_live.enm.utils import parse_bbu_ips, parse_node_parameter
 
 
@@ -15,22 +16,46 @@ def enm_main(enm, technology, atoll_data):
     Returns:
         list: a list of dictionaries containing cell parameters
     """
-    if technology == 'LTE':
-
-        enm_enbids = EnmCli.execute_cli_command(enm, 'enodeb_id')
-        enbids = parse_node_parameter(enm_enbids, 'MeContext')
-
+    if technology in {'NR', 'LTE'}:
         enm_bbu_ips = EnmCli.execute_cli_command(enm, 'bbu_ip')
         bbu_ips = parse_bbu_ips(enm_bbu_ips)
 
         enm_dus_ips = EnmCli.execute_cli_command(enm, 'dus_ip')
         dus_ips = parse_node_parameter(enm_dus_ips, 'MeContext')
 
-        enm_lte_cells = EnmCli.execute_cli_command(enm, 'lte_cells')
-        return parse_lte_cells_params(
-            enm_lte_cells,
-            enbids,
-            {**bbu_ips, **dus_ips},
-            atoll_data,
+    if technology == 'NR':
+        enm_nr_ids = EnmCli.execute_cli_command(enm, 'gnbid')
+        gnbids = parse_node_parameter(enm_nr_ids, 'MeContext')
+
+        enm_nr_sectors = EnmCli.execute_cli_command(enm, 'nr_sectors')
+        nr_sectors = parse_nr_sectors(enm_nr_sectors)
+
+        last_parameter = sorted(EnmCli.nr_cell_params)[-1]
+
+        enm_nr_cells = EnmCli.execute_cli_command(enm, 'nr_cells')
+        cells = parse_nr_cells(
             enm,
+            enm_nr_cells,
+            last_parameter,
+            atoll_data,
+            nr_sectors,
+            gnbids,
+            bbu_ips,
         )
+    elif technology == 'LTE':
+        enm_enbids = EnmCli.execute_cli_command(enm, 'enodeb_id')
+        enbids = parse_node_parameter(enm_enbids, 'MeContext')
+
+        node_ips = {**bbu_ips, **dus_ips}
+        last_parameter = sorted(EnmCli.lte_cell_params)[-1]
+
+        enm_lte_cells = EnmCli.execute_cli_command(enm, 'lte_cells')
+        cells = parse_lte_cells(
+            enm,
+            enm_lte_cells,
+            last_parameter,
+            atoll_data,
+            enbids,
+            node_ips,
+        )
+    return cells

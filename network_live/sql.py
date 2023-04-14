@@ -232,7 +232,7 @@ gsm_insert_sql = """
 
 nr_insert_sql = """
     INSERT
-        INTO nrcells
+        INTO nrcells2
     VALUES (
         :subnetwork,
         :gNBId,
@@ -250,12 +250,12 @@ nr_insert_sql = """
         :configuredMaxTxPower,
         :ip_address,
         :vendor,
-        :insert_date,
         :oss,
         :azimut,
         :height,
         :longitude,
-        :latitude
+        :latitude,
+        :insert_date
     )
 """
 
@@ -282,7 +282,7 @@ def update_network_live(cells, oss, technology):
         'LTE': 'ltecells3',
         'WCDMA': 'wcdmacells2',
         'GSM': 'gsmcells2',
-        'NR': 'nrcells',
+        'NR': 'nrcells2',
     }
 
     delete_sql = "DELETE FROM {table} WHERE oss='{oss}'".format(

@@ -15,6 +15,8 @@ def parse_fdn(fdn, mo_type):
     re_patterns = {
         'SubNetwork': ',SubNetwork=[^,]*',
         'MeContext': 'MeContext=[^,]*',
+        'NRSectorCarrier': 'NRSectorCarrier=.*',
+        'NRCellDU': 'NRCellDU=.*',
         'EUtranCellFDD': 'EUtranCellFDD=[^,]*',
     }
 
