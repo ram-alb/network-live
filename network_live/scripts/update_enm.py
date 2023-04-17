@@ -22,3 +22,13 @@ def update_enm1_nr():
 def update_enm2_nr():
     """Update Network Live with ENM2 nr cells."""
     print(update_enm('ENM2', 'NR'))
+
+
+def update_enm1_wcdma():
+    """Update Network Live with ENM1 wcdma cells."""
+    print(update_enm('ENM1', 'WCDMA'))
+
+
+def update_enm2_wcdma():
+    """Update Network Live with ENM2 wcdma cells."""
+    print(update_enm('ENM2', 'WCDMA'))

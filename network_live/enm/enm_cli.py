@@ -33,6 +33,25 @@ class EnmCli(object):
         'cellRange',
     ]
 
+    wcdma_cell_params = [
+        'cId',
+        'localCellId',
+        'uarfcnDl',
+        'uarfcnUl',
+        'primaryScramblingCode',
+        'locationAreaRef',
+        'routingAreaRef',
+        'serviceAreaRef',
+        'uraRef',
+        'primaryCpichPower',
+        'maximumTransmissionPower',
+        'iubLinkRef',
+        'mocnCellProfileRef',
+        'administrativeState',
+        'qRxLevMin',
+        'qQualMin',
+    ]
+
     cli_commands = {
         'nr_cells': 'cmedit get * NRCellDU.({params})'.format(
             params=','.join(nr_cell_params),
@@ -45,8 +64,14 @@ class EnmCli(object):
             params=','.join(lte_cell_params),
         ),
         'enodeb_id': 'cmedit get * ENodeBFunction.(enbid)',
-        'bbu_ip': 'cmedit get * AddressIPv4.(address)',
-        'dus_ip': 'cmedit get * Ip.(nodeIpAddress)',
+        'wcdma_cells': 'cmedit get * UtranCell.({params})'.format(
+            params=','.join(wcdma_cell_params),
+        ),
+        'rnc_ids': 'cmedit get * RncFunction.(rncId)',
+        'rnc_iublink_ips': 'cmedit get *RNC* IubLink.(remoteCpIpAddress1)',
+        'dus_iub_ips': 'cmedit get * IpAccessHostEt.(ipAddress)',
+        'dus_oam_ips': 'cmedit get * Ip.(nodeIpAddress)',
+        'bbu_ips': 'cmedit get * AddressIPv4.(address)',
     }
 
     @classmethod

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "network-live"
-version = "0.1.0"
+version = "0.3.0"
 description = "Collects all cells for all technologies for the Kcell radio network"
 authors = ["Ramil Albakov <ramil.albakov2@gmail.com>"]
 readme = "README.md"
@@ -17,7 +17,8 @@ update-enm1-lte = "network_live.scripts.update_enm:update_enm1_lte"
 update-enm2-lte = "network_live.scripts.update_enm:update_enm2_lte"
 update-enm1-nr = "network_live.scripts.update_enm:update_enm1_nr"
 update-enm2-nr = "network_live.scripts.update_enm:update_enm2_nr"
-select-atoll = "network_live.scripts.update_enm_lte:main_atoll"
+update-enm1-wcdma = "network_live.scripts.update_enm:update_enm1_wcdma"
+update-enm2-wcdma = "network_live.scripts.update_enm:update_enm2_wcdma"
 
 [tool.poetry.group.dev.dependencies]
 wemake-python-styleguide = "^0.17.0"

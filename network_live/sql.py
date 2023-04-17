@@ -170,7 +170,7 @@ lte_insert_sql = """
 
 wcdma_insert_sql = """
     INSERT
-        INTO wcdmacells2
+        INTO wcdmacells3
     VALUES (
         :operator,
         :rnc_id,
@@ -188,17 +188,19 @@ wcdma_insert_sql = """
         :Ura,
         :primaryCpichPower,
         :maximumTransmissionPower,
+        :qRxLevMin,
+        :qQualMin,
         :IubLink,
         :MocnCellProfile,
         :administrativeState,
         :ip_address,
         :vendor,
         :oss,
-        :insert_date,
         :azimut,
         :height,
         :longitude,
-        :latitude
+        :latitude,
+        :insert_date
     )
 """
 
@@ -280,7 +282,7 @@ def update_network_live(cells, oss, technology):
     }
     network_live_tables = {
         'LTE': 'ltecells3',
-        'WCDMA': 'wcdmacells2',
+        'WCDMA': 'wcdmacells3',
         'GSM': 'gsmcells2',
         'NR': 'nrcells2',
     }
