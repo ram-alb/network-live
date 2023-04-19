@@ -1,6 +1,11 @@
 from datetime import date
 
-from network_live.enm.utils import parse_fdn
+from network_live.enm.enm_cli import EnmCli
+from network_live.enm.utils import (
+    parse_bbu_ips,
+    parse_fdn,
+    parse_node_parameter,
+)
 from network_live.physical_params import add_physical_params
 
 
@@ -75,3 +80,37 @@ def parse_lte_cells(enm, enm_lte_cells, last_parameter, atoll_data, *args):
                 cell['eci'] = calculate_eci(cell['enodeb_id'], cell['cellId'])
                 lte_cells.append(add_physical_params(atoll_data, cell))
     return lte_cells
+
+
+def lte_main(enm, atoll_data):
+    """
+    Prepare enm lte cell data for Network Live.
+
+    Args:
+        enm (str): an ENM server number
+        atoll_data (dict): a dict of cell physical params
+
+    Returns:
+        list: a list of dicts containing the parameters for each LTE cell
+    """
+    enm_bbu_ips = EnmCli.execute_cli_command(enm, 'bbu_ips')
+    bbu_oam_ips = parse_bbu_ips(enm_bbu_ips, 'router=oam')
+
+    enm_dus_oam_ips = EnmCli.execute_cli_command(enm, 'dus_oam_ips')
+    dus_oam_ips = parse_node_parameter(enm_dus_oam_ips, 'MeContext')
+
+    enm_enbids = EnmCli.execute_cli_command(enm, 'enodeb_id')
+    enbids = parse_node_parameter(enm_enbids, 'MeContext')
+
+    node_ips = {**bbu_oam_ips, **dus_oam_ips}
+    last_parameter = sorted(EnmCli.lte_cell_params)[-1]
+
+    enm_lte_cells = EnmCli.execute_cli_command(enm, 'lte_cells')
+    return parse_lte_cells(
+        enm,
+        enm_lte_cells,
+        last_parameter,
+        atoll_data,
+        enbids,
+        node_ips,
+    )

@@ -52,6 +52,21 @@ class EnmCli(object):
         'qQualMin',
     ]
 
+    gsm_cell_params = [
+        'bcc',
+        'ncc',
+        'cgi',
+        'bcchNo',
+        'state',
+    ]
+
+    gsm_channel_params = [
+        'channelGroupId==1',
+        'hsn',
+        'maio',
+        'dchNo',
+    ]
+
     cli_commands = {
         'nr_cells': 'cmedit get * NRCellDU.({params})'.format(
             params=','.join(nr_cell_params),
@@ -72,6 +87,16 @@ class EnmCli(object):
         'dus_iub_ips': 'cmedit get * IpAccessHostEt.(ipAddress)',
         'dus_oam_ips': 'cmedit get * Ip.(nodeIpAddress)',
         'bbu_ips': 'cmedit get * AddressIPv4.(address)',
+        'gsm_bbu_sites': 'cmedit get * gsmsector.(bscNodeIdentity)',
+        'gsm_tg12_sites': 'cmedit get * G12Tg.(rSite, connectedChannelGroup)',
+        'gsm_tg31_sites': 'cmedit get * G31Tg.(rSite, connectedChannelGroup)',
+        'gsm_cells': 'cmedit get * GeranCell.({params})'.format(
+            params=','.join(gsm_cell_params),
+        ),
+        'channel_group': 'cmedit get * ChannelGroup.({params})'.format(
+            params=','.join(gsm_channel_params),
+        ),
+        'bsc_ids': 'cmedit get * Bsc.(bscId)',
     }
 
     @classmethod

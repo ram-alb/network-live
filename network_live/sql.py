@@ -206,7 +206,7 @@ wcdma_insert_sql = """
 
 gsm_insert_sql = """
     INSERT
-        INTO gsmcells2
+        INTO gsmcells3
     VALUES (
         :operator,
         :bsc_id,
@@ -220,15 +220,15 @@ gsm_insert_sql = """
         :bcchNo,
         :hsn,
         :maio,
-        :tch_freqs,
+        :dchNo,
         :state,
         :vendor,
-        :insert_date,
         :oss,
         :azimut,
         :height,
         :longitude,
-        :latitude
+        :latitude,
+        :insert_date
     )
 """
 
@@ -283,7 +283,7 @@ def update_network_live(cells, oss, technology):
     network_live_tables = {
         'LTE': 'ltecells3',
         'WCDMA': 'wcdmacells3',
-        'GSM': 'gsmcells2',
+        'GSM': 'gsmcells3',
         'NR': 'nrcells2',
     }
 

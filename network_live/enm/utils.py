@@ -20,6 +20,9 @@ def parse_fdn(fdn, mo_type):
         'EUtranCellFDD': 'EUtranCellFDD=[^,]*',
         'IubLink': 'IubLink=.*',
         'UtranCell': 'UtranCell=.*',
+        'GsmSector': 'GsmSector=.*',
+        'GeranCell': 'GeranCell=.*',
+        'ChannelGroupCell': 'GeranCell=[^,]*',
     }
 
     mo_value_index = -1
@@ -74,12 +77,13 @@ def get_ip(ip_string):
     return ip_address
 
 
-def parse_bbu_ips(enm_ip_data, router_str):
+def parse_bbu_ips(enm_ip_data, router_type):
     """
     Parse the BBU IP addresses from a tuple of ElementGroup objects.
 
     Args:
         enm_ip_data (tuple): a list of ElementGroup objects to parse
+        router_type (str): a router type, for example (oam, iub)
 
     Returns:
         dict: a dictionary of BBU names and IP addresses
@@ -88,7 +92,7 @@ def parse_bbu_ips(enm_ip_data, router_str):
     router = False
     for element in enm_ip_data:
         element_val = element.value()
-        if 'FDN' in element_val and router_str in element_val.lower():
+        if 'FDN' in element_val and router_type in element_val.lower():
             name = parse_fdn(element_val, 'MeContext')
             router = True
         elif ' : ' in element_val and router:

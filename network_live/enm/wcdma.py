@@ -1,7 +1,14 @@
-from network_live.enm.utils import parse_node_parameter, parse_bbu_ips, parse_fdn
 from datetime import date
+
 from network_live.enm.enm_cli import EnmCli
+from network_live.enm.utils import (
+    parse_bbu_ips,
+    parse_fdn,
+    parse_node_parameter,
+)
 from network_live.physical_params import add_physical_params
+
+me_context = 'MeContext'
 
 
 def swap_keys_vals(dict_obj):
@@ -14,7 +21,7 @@ def swap_keys_vals(dict_obj):
     Returns:
         dict: a swapped dict
     """
-    return {value: key for key, value in dict_obj.items()}
+    return {dict_value: key for key, dict_value in dict_obj.items()}
 
 
 def parse_wcdma_site_names(enm_rnc_iublink_ips, enm_dus_iub_ips, enm_bbu_ips):
@@ -31,9 +38,12 @@ def parse_wcdma_site_names(enm_rnc_iublink_ips, enm_dus_iub_ips, enm_bbu_ips):
     """
     rnc_iublink_ips = parse_node_parameter(enm_rnc_iublink_ips, 'IubLink')
 
-    dus_iub_ips = parse_node_parameter(enm_dus_iub_ips, 'MeContext')
+    dus_iub_ips = parse_node_parameter(enm_dus_iub_ips, me_context)
     bbu_iub_ips = parse_bbu_ips(enm_bbu_ips, 'iub')
-    site_iublink_ips = {**swap_keys_vals(dus_iub_ips), **swap_keys_vals(bbu_iub_ips)}
+    site_iublink_ips = {
+        **swap_keys_vals(dus_iub_ips),
+        **swap_keys_vals(bbu_iub_ips),
+    }
 
     site_names = {}
     for iublink, iub_ip in rnc_iublink_ips.items():
@@ -122,14 +132,18 @@ def parse_wcdma_cells(enm, enm_wcdma_cells, last_parameter, atoll_data, *args):
         if 'FDN' in element_val:
             cell = {
                 'oss': enm,
-                'rnc_name': parse_fdn(element_val, 'MeContext'),
+                'rnc_name': parse_fdn(element_val, me_context),
                 'cell_name': parse_fdn(element_val, 'UtranCell'),
             }
         elif attr_delimeter in element_val:
             parameter_name, parameter_value = parse_parameter(element_val)
             cell[parameter_name] = parameter_value
             if parameter_name.lower() in last_parameter.lower():
-                extra_data = get_extra_data(cell['IubLink'], cell['rnc_name'], *args)
+                extra_data = get_extra_data(
+                    cell['IubLink'],
+                    cell['rnc_name'],
+                    *args,
+                )
                 wcdma_cells.append(
                     add_physical_params(atoll_data, {**cell, **extra_data}),
                 )
@@ -150,17 +164,29 @@ def wcdma_main(enm, atoll_data):
     enm_rnc_iublink_ips = EnmCli.execute_cli_command(enm, 'rnc_iublink_ips')
     enm_dus_iub_ips = EnmCli.execute_cli_command(enm, 'dus_iub_ips')
     enm_bbu_ips = EnmCli.execute_cli_command(enm, 'bbu_ips')
-    site_names = parse_wcdma_site_names(enm_rnc_iublink_ips, enm_dus_iub_ips, enm_bbu_ips)
+    site_names = parse_wcdma_site_names(
+        enm_rnc_iublink_ips,
+        enm_dus_iub_ips,
+        enm_bbu_ips,
+    )
 
     enm_dus_oam_ips = EnmCli.execute_cli_command(enm, 'dus_oam_ips')
-    dus_oam_ips = parse_node_parameter(enm_dus_oam_ips, 'MeContext')
+    dus_oam_ips = parse_node_parameter(enm_dus_oam_ips, me_context)
+
     bbu_oam_ips = parse_bbu_ips(enm_bbu_ips, 'oam')
     node_oam_ips = {**bbu_oam_ips, **dus_oam_ips}
 
     enm_rnc_ids = EnmCli.execute_cli_command(enm, 'rnc_ids')
-    rnc_ids = parse_node_parameter(enm_rnc_ids, 'MeContext')
+    rnc_ids = parse_node_parameter(enm_rnc_ids, me_context)
 
     last_parameter = sorted(EnmCli.wcdma_cell_params)[-1]
     enm_wcdma_cells = EnmCli.execute_cli_command(enm, 'wcdma_cells')
-    wcdma_cells = parse_wcdma_cells(enm, enm_wcdma_cells, last_parameter, atoll_data, site_names, rnc_ids, node_oam_ips)
-    return wcdma_cells
+    return parse_wcdma_cells(
+        enm,
+        enm_wcdma_cells,
+        last_parameter,
+        atoll_data,
+        site_names,
+        rnc_ids,
+        node_oam_ips,
+    )

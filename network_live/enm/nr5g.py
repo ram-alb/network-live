@@ -1,6 +1,11 @@
 from datetime import date
 
-from network_live.enm.utils import parse_fdn
+from network_live.enm.enm_cli import EnmCli
+from network_live.enm.utils import (
+    parse_bbu_ips,
+    parse_fdn,
+    parse_node_parameter,
+)
 from network_live.physical_params import add_physical_params
 
 attr_delimeter = ' : '
@@ -105,3 +110,37 @@ def parse_nr_cells(enm, enm_nr_cells, last_parameter, atoll_data, *args):
                     add_physical_params(atoll_data, cell),
                 )
     return nr_cells
+
+
+def nr_main(enm, atoll_data):
+    """
+    Prepare enm nr cell data for Network Live.
+
+    Args:
+        enm (str): an ENM server number
+        atoll_data (dict): a dict of cell physical params
+
+    Returns:
+        list: a list of dicts containing the parameters for each NR cell
+    """
+    enm_bbu_ips = EnmCli.execute_cli_command(enm, 'bbu_ips')
+    bbu_oam_ips = parse_bbu_ips(enm_bbu_ips, 'router=oam')
+
+    enm_nr_ids = EnmCli.execute_cli_command(enm, 'gnbid')
+    gnbids = parse_node_parameter(enm_nr_ids, 'MeContext')
+
+    enm_nr_sectors = EnmCli.execute_cli_command(enm, 'nr_sectors')
+    nr_sectors = parse_nr_sectors(enm_nr_sectors)
+
+    last_parameter = sorted(EnmCli.nr_cell_params)[-1]
+
+    enm_nr_cells = EnmCli.execute_cli_command(enm, 'nr_cells')
+    return parse_nr_cells(
+        enm,
+        enm_nr_cells,
+        last_parameter,
+        atoll_data,
+        nr_sectors,
+        gnbids,
+        bbu_oam_ips,
+    )
