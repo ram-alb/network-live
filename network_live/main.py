@@ -23,4 +23,5 @@ def update_enm(enm, technology):
 def update_oss(technology):
     atoll_physical_params = select_atoll_data(technology)
     cells = oss_main(technology, atoll_physical_params)
+    # return cells
     return update_network_live(cells, 'OSS', technology)

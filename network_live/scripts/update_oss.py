@@ -6,3 +6,7 @@ load_dotenv()
 
 def update_wcdma():
     print(update_oss('WCDMA'))
+
+
+def update_gsm():
+    print(update_oss('GSM'))
