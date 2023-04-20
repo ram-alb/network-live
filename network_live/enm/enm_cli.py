@@ -85,6 +85,7 @@ class EnmCli(object):
         'rnc_ids': 'cmedit get * RncFunction.(rncId)',
         'rnc_iublink_ips': 'cmedit get *RNC* IubLink.(remoteCpIpAddress1)',
         'dus_iub_ips': 'cmedit get * IpAccessHostEt.(ipAddress)',
+        'wcdma_rbs_ids': 'cmedit get * Iub.(rbsId)',
         'dus_oam_ips': 'cmedit get * Ip.(nodeIpAddress)',
         'bbu_ips': 'cmedit get * AddressIPv4.(address)',
         'gsm_bbu_sites': 'cmedit get * gsmsector.(bscNodeIdentity)',

@@ -94,7 +94,7 @@ def lte_main(enm, atoll_data):
         list: a list of dicts containing the parameters for each LTE cell
     """
     enm_bbu_ips = EnmCli.execute_cli_command(enm, 'bbu_ips')
-    bbu_oam_ips = parse_bbu_ips(enm_bbu_ips, 'router=oam')
+    bbu_oam_ips = parse_bbu_ips(enm_bbu_ips, 'oam')
 
     enm_dus_oam_ips = EnmCli.execute_cli_command(enm, 'dus_oam_ips')
     dus_oam_ips = parse_node_parameter(enm_dus_oam_ips, 'MeContext')
