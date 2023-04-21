@@ -29,6 +29,8 @@ update-oss-gsm = "network_live.scripts.update_oss:update_gsm"
 update-tele2-lte = "network_live.scripts.update_tele2:update_lte"
 update-tele2-wcdma = "network_live.scripts.update_tele2:update_wcdma"
 update-tele2-gsm = "network_live.scripts.update_tele2:update_gsm"
+update-beeline-huawei-lte = "network_live.scripts.update_beeline:update_huawei_lte"
+update-beeline-huawei-wcdma = "network_live.scripts.update_beeline:update_huawei_wcdma"
 
 [tool.poetry.group.dev.dependencies]
 wemake-python-styleguide = "^0.17.0"

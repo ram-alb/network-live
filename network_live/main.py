@@ -2,6 +2,7 @@ from network_live.enm.enm_main import enm_main
 from network_live.oss.oss_main import oss_main
 from network_live.tele2.tele2_main import tele2_main
 from network_live.sql import select_atoll_data, update_network_live
+from network_live.beeline.beeline_main import beeline_main
 
 
 def update_enm(enm, technology):
@@ -33,3 +34,10 @@ def update_tele2(technology):
     cells = tele2_main(technology, atoll_data)
     # return cells
     return update_network_live(cells, 'Tele2', technology)
+
+
+def update_beeline(vendor, technology):
+    atoll_data = select_atoll_data(technology)
+    cells = beeline_main(vendor, technology, atoll_data)
+    # return cells
+    return update_network_live(cells, f'Beeline {vendor}', technology)
