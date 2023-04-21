@@ -1,5 +1,6 @@
 from network_live.enm.enm_main import enm_main
 from network_live.oss.oss_main import oss_main
+from network_live.tele2.tele2_main import tele2_main
 from network_live.sql import select_atoll_data, update_network_live
 
 
@@ -25,3 +26,10 @@ def update_oss(technology):
     cells = oss_main(technology, atoll_physical_params)
     # return cells
     return update_network_live(cells, 'OSS', technology)
+
+
+def update_tele2(technology):
+    atoll_data = select_atoll_data(technology)
+    cells = tele2_main(technology, atoll_data)
+    # return cells
+    return update_network_live(cells, 'Tele2', technology)

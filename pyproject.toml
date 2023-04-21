@@ -26,6 +26,9 @@ update-enm1-gsm = "network_live.scripts.update_enm:update_enm1_gsm"
 update-enm2-gsm = "network_live.scripts.update_enm:update_enm2_gsm"
 update-oss-wcdma = "network_live.scripts.update_oss:update_wcdma"
 update-oss-gsm = "network_live.scripts.update_oss:update_gsm"
+update-tele2-lte = "network_live.scripts.update_tele2:update_lte"
+update-tele2-wcdma = "network_live.scripts.update_tele2:update_wcdma"
+update-tele2-gsm = "network_live.scripts.update_tele2:update_gsm"
 
 [tool.poetry.group.dev.dependencies]
 wemake-python-styleguide = "^0.17.0"
