@@ -1,5 +1,5 @@
-from network_live.oss.wcdma import wcdma_main
 from network_live.oss.gsm import gsm_main
+from network_live.oss.wcdma import wcdma_main
 
 
 def oss_main(technology, atoll_data):

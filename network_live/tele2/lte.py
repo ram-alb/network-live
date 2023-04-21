@@ -1,8 +1,8 @@
 import csv
-
-from network_live.physical_params import add_physical_params
 from datetime import date
+
 from network_live.ftp import download_ftp_logs
+from network_live.physical_params import add_physical_params
 
 
 def convert_string_to_num(string_value):

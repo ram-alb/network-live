@@ -31,6 +31,9 @@ update-tele2-wcdma = "network_live.scripts.update_tele2:update_wcdma"
 update-tele2-gsm = "network_live.scripts.update_tele2:update_gsm"
 update-beeline-huawei-lte = "network_live.scripts.update_beeline:update_huawei_lte"
 update-beeline-huawei-wcdma = "network_live.scripts.update_beeline:update_huawei_wcdma"
+update-beeline-nokia-lte = "network_live.scripts.update_beeline:update_nokia_lte"
+update-beeline-nokia-wcdma = "network_live.scripts.update_beeline:update_nokia_wcdma"
+update-beeline-nokia-gsm = "network_live.scripts.update_beeline:update_nokia_gsm"
 
 [tool.poetry.group.dev.dependencies]
 wemake-python-styleguide = "^0.17.0"

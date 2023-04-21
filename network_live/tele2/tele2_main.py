@@ -1,6 +1,6 @@
+from network_live.tele2.gsm import gsm_main
 from network_live.tele2.lte import lte_main
 from network_live.tele2.wcdma import wcdma_main
-from network_live.tele2.gsm import gsm_main
 
 
 def tele2_main(technology, atoll_data):

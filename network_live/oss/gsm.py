@@ -1,7 +1,8 @@
 from datetime import date
-from network_live.physical_params import add_physical_params
-from network_live.oss.oss_ssh import collect_oss_logs
+
 from network_live.ftp import download_oss_logs
+from network_live.oss.oss_ssh import collect_oss_logs
+from network_live.physical_params import add_physical_params
 
 
 def parse_hsn(gsm_params, line):

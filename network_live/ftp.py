@@ -162,7 +162,7 @@ def download_ftp_logs(operator, is_unzip=True):
         'beeline_huawei_mocn': '/reporter/beeline/mocn/cm/LTE/{date}.zip'.format(date=date),
         'beeline_nokia_moran': '/reporter/beeline/cm/Nokia/LTE/{date}.zip'.format(date=date),
         'beeline_nokia_mocn': '/reporter/beeline/cm/Nokia/LTE_MOCN/{date}.zip'.format(date=date),
-        'beeline_nokia_wcdma': '/reporter/beeline/cm/Nokia/GU/{date}.zip'.format(date=date),
+        'beeline_nokia_gu': '/reporter/beeline/cm/Nokia/GU/{date}.zip'.format(date=date),
         'beeline_nokia_250': '{bee250_path}/{date}/UMTS_531603_Shymkent_N_{date}.xml'.format(
             bee250_path=bee250_path,
             date=date,

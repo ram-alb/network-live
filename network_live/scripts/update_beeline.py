@@ -10,3 +10,15 @@ def update_huawei_lte():
 
 def update_huawei_wcdma():
     print(update_beeline('Huawei', 'WCDMA'))
+
+
+def update_nokia_lte():
+    print(update_beeline('Nokia', 'LTE'))
+
+
+def update_nokia_wcdma():
+    print(update_beeline('Nokia', 'WCDMA'))
+
+
+def update_nokia_gsm():
+    print(update_beeline('Nokia', 'GSM'))

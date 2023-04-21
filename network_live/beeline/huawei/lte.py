@@ -1,10 +1,9 @@
-from network_live.ftp import download_ftp_logs
-
 import os
+from datetime import date
 
 from defusedxml import ElementTree
+from network_live.ftp import download_ftp_logs
 from network_live.physical_params import add_physical_params
-from datetime import date
 
 
 def make_tag(tag):

@@ -1,5 +1,6 @@
-from network_live.ftp import download_ftp_logs
 import os
+
+from network_live.ftp import download_ftp_logs
 from network_live.huawei_parser import parse_gsm_cells
 
 

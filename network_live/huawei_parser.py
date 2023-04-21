@@ -1,6 +1,7 @@
+from datetime import date
+
 from defusedxml import ElementTree
 from network_live.physical_params import add_physical_params
-from datetime import date
 
 
 def make_tag(tag_name):

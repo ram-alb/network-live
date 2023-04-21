@@ -1,7 +1,8 @@
+import os
+
 from network_live.ftp import download_bee250_huawei_xml
 from network_live.huawei_parser import parse_huawei_wcdma_cells
 
-import os
 
 def wcdma_main(atoll_data):
     logs_path = 'logs/beeline'
