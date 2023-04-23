@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "network-live"
-version = "0.4.0"
+version = "0.5.0"
 description = "Collects all cells for all technologies for the Kcell radio network"
 authors = ["Ramil Albakov <ramil.albakov2@gmail.com>"]
 readme = "README.md"
@@ -34,6 +34,8 @@ update-beeline-huawei-wcdma = "network_live.scripts.update_beeline:update_huawei
 update-beeline-nokia-lte = "network_live.scripts.update_beeline:update_nokia_lte"
 update-beeline-nokia-wcdma = "network_live.scripts.update_beeline:update_nokia_wcdma"
 update-beeline-nokia-gsm = "network_live.scripts.update_beeline:update_nokia_gsm"
+update-zte-wcdma = "network_live.scripts.update_zte:update_wcdma"
+update-zte-gsm = "network_live.scripts.update_zte:update_gsm"
 
 [tool.poetry.group.dev.dependencies]
 wemake-python-styleguide = "^0.17.0"
