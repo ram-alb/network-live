@@ -113,9 +113,9 @@ def parse_gsm_cells(log_path, atoll_data):
 
 
 def gsm_main(atoll_data):
-    # cna_result = collect_oss_logs('GSM')
-    log_path = 'logs/oss/network_live_gsm_export.txt'
-    # if '100%' in cna_result:
-        # log_path = download_oss_logs('GSM')
+    cna_result = collect_oss_logs('GSM')
+    # log_path = 'logs/oss/network_live_gsm_export.txt'
+    if '100%' in cna_result:
+        log_path = download_oss_logs('GSM')
 
     return parse_gsm_cells(log_path, atoll_data)

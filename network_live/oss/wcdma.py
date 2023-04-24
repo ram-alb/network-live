@@ -345,7 +345,7 @@ def wcdma_main(atoll_data):
         'MeContext',
     )
 
-    xml_path = 'logs/oss/oss_utrancells.xml'
+    # xml_path = 'logs/oss/oss_utrancells.xml'
 
     bcg_result = collect_oss_logs('WCDMA')
     if 'Export has succeeded' in bcg_result:

@@ -50,3 +50,57 @@ def update_zte(technology):
     # return cells
     return update_network_live(cells, 'ZTE', technology)
 
+
+def update_nl():
+    technologies = ['NR', 'LTE', 'WCDMA', 'GSM']
+    atoll_data = {tech: select_atoll_data(tech) for tech in technologies}
+    results = []
+
+    for enm in ('ENM1', 'ENM2'):
+        for enm_tech in technologies:
+            try:
+                enm_cells = enm_main(enm, enm_tech, atoll_data[enm_tech])
+                results.append(update_network_live(enm_cells, enm, enm_tech))
+            except:
+                results.append(f'{enm_tech} {enm} fail')
+            print(results[-1])
+
+    for oss_zte_tech in technologies[2:]:
+        try:
+            oss_cells = oss_main(oss_zte_tech, atoll_data[oss_zte_tech])
+            results.append(update_network_live(oss_cells, 'OSS', oss_zte_tech))
+        except:
+            results.append(f'{oss_zte_tech} OSS fail')
+        print(results[-1])
+
+        try:
+            zte_cells = zte_main(oss_zte_tech, atoll_data[oss_zte_tech])
+            results.append(update_network_live(zte_cells, 'ZTE', oss_zte_tech))
+        except:
+            results.append(f'{oss_zte_tech} ZTE fail')
+        print(results[-1])
+
+    for tele2_nokia_tech in technologies[1:]:
+        try:
+            tele2_cells = tele2_main(tele2_nokia_tech, atoll_data[tele2_nokia_tech])
+            results.append(update_network_live(tele2_cells, 'Tele2', tele2_nokia_tech))
+        except:
+            results.append(f'{tele2_nokia_tech} Tele2 fail')
+        print(results[-1])
+
+        try:
+            bee_nokia_cells = beeline_main('Nokia', tele2_nokia_tech, atoll_data[tele2_nokia_tech])
+            results.append(update_network_live(bee_nokia_cells, 'Beeline Nokia', tele2_nokia_tech))
+        except:
+            results.append(f'{tele2_nokia_tech} Beeline Nokia fail')
+        print(results[-1])
+
+    for bee_hua_tech in technologies[1:3]:
+        try:
+            bee_hua_cells = beeline_main('Huawei', bee_hua_tech, atoll_data[bee_hua_tech])
+            results.append(update_network_live(bee_hua_cells, 'Beeline Huawei', bee_hua_tech))
+        except:
+            results.append(f'{bee_hua_tech} Beeline Huawei fail')
+        print(results[-1])
+
+    return results
