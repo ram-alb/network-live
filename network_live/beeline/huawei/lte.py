@@ -16,8 +16,8 @@ def make_tag(tag):
     Returns:
         string
     """
-    namespace = '{http://www.huawei.com/specs/bsc6000_nrm_forSyn_collapse_1.0.0}'
-    return '{namespace}{tag}'.format(namespace=namespace, tag=tag)
+    ns = '{http://www.huawei.com/specs/bsc6000_nrm_forSyn_collapse_1.0.0}'
+    return f'{ns}{tag}'
 
 
 def parse_tag_text(tag, parent):
@@ -145,7 +145,10 @@ def parse_huawei_xml(xml_path, sharing, atoll_data):
     mocn_min_cell_id, mocn_max_cell_id = (0, 100)
     mocn_cellid_range = list(range(mocn_min_cell_id, mocn_max_cell_id))
 
-    cellid_range = moran_cellid_range if sharing == 'moran' else mocn_cellid_range
+    if sharing == 'moran':
+        cellid_range = moran_cellid_range
+    else:
+        cellid_range = mocn_cellid_range
 
     for element in root.iter(make_tag('Cell')):
         cell = {
@@ -167,7 +170,10 @@ def parse_huawei_xml(xml_path, sharing, atoll_data):
             cell['cellId'] = cell_id
             cell['earfcndl'] = parse_tag_text('DlEarfcn', element)
             cell['administrativeState'] = cell_state
-            cell['rachRootSequence'] = parse_tag_text('RootSequenceIdx', element)
+            cell['rachRootSequence'] = parse_tag_text(
+                'RootSequenceIdx',
+                element,
+            )
             cell['physicalLayerCellId'] = parse_tag_text('PhyCellId', element)
             cell['qRxLevMin'] = qrxlevmin_data[cell_id]
             cell['tac'] = parse_tac(root, sharing)
@@ -203,8 +209,16 @@ def parse_lte_huawei(logs_path, sharing, atoll_data):
     return cell_data
 
 
-
 def lte_main(atoll_data):
+    """
+    Prepare shared by Beeline Huawei lte cell data for Network Live.
+
+    Args:
+        atoll_data (dict): a dict of cell physical params
+
+    Returns:
+        list: a list of dicts containing the parameters for each LTE cell
+    """
     logs_path = 'logs/beeline'
 
     download_ftp_logs('beeline_huawei')

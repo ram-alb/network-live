@@ -14,6 +14,7 @@ cx-Oracle = "^8.3.0"
 deepmerge = "^1.1.0"
 paramiko = "^3.1.0"
 defusedxml = "^0.7.1"
+anpusr-mail = {path = "../local_packages/anpusr_mail-0.1.0-py3-none-any.whl"}
 
 [tool.poetry.scripts]
 update-enm1-lte = "network_live.scripts.update_enm:update_enm1_lte"

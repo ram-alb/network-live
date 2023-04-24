@@ -185,10 +185,10 @@ def parse_nokia_xml(xml_path, atoll_data):
         lncel['enodeb_id'] = lnbts_params['enodeb_id']
         lncel['site_name'] = lnbts_params['site_name']
 
-        cell_id = lncel['cellId']
-        lncel['earfcndl'] = lncellfdd_params[cell_id]['earfcndl']
-        lncel['rachRootSequence'] = lncellfdd_params[cell_id]['rachRootSequence']
-        lncel['qRxLevMin'] = sib_params[cell_id]
+        cellid = lncel['cellId']
+        lncel['earfcndl'] = lncellfdd_params[cellid]['earfcndl']
+        lncel['rachRootSequence'] = lncellfdd_params[cellid]['rachRootSequence']
+        lncel['qRxLevMin'] = sib_params[cellid]
         lncel['subnetwork'] = 'Beeline'
         lncel['vendor'] = 'Nokia'
         lncel['ip_address'] = None
@@ -221,6 +221,15 @@ def parse_lte_nokia(logs_path, atoll_data):
 
 
 def lte_main(atoll_data):
+    """
+    Prepare shared by Beeline Nokia lte cell data for Network Live.
+
+    Args:
+        atoll_data (dict): a dict of cell physical params
+
+    Returns:
+        list: a list of dicts containing the parameters for each LTE cell
+    """
     logs_path = 'logs/beeline'
     download_ftp_logs('beeline_nokia_moran')
     cells = parse_lte_nokia(logs_path, atoll_data)

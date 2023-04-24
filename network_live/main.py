@@ -4,6 +4,7 @@ from network_live.oss.oss_main import oss_main
 from network_live.sql import select_atoll_data, update_network_live
 from network_live.tele2.tele2_main import tele2_main
 from network_live.zte.zte_main import zte_main
+from anpusr_mail import send_email
 
 
 def update_enm(enm, technology):
@@ -15,43 +16,76 @@ def update_enm(enm, technology):
         technology (str): the RAN technology
 
     Returns:
-        dict
+        str: update result
     """
     atoll_physical_params = select_atoll_data(technology)
     cells = enm_main(enm, technology, atoll_physical_params)
-    # return cells
     return update_network_live(cells, enm, technology)
 
 
 def update_oss(technology):
+    """
+    Update Network Live database with OSS cells for given technology.
+
+    Args:
+        technology (str): the RAN technology
+
+    Returns:
+        str: update result
+    """
     atoll_physical_params = select_atoll_data(technology)
     cells = oss_main(technology, atoll_physical_params)
-    # return cells
     return update_network_live(cells, 'OSS', technology)
 
 
 def update_tele2(technology):
+    """
+    Update Network Live database with Tele2 cells for given technology.
+
+    Args:
+        technology (str): the RAN technology
+
+    Returns:
+        str: update result
+    """
     atoll_data = select_atoll_data(technology)
     cells = tele2_main(technology, atoll_data)
-    # return cells
     return update_network_live(cells, 'Tele2', technology)
 
 
 def update_beeline(vendor, technology):
+    """
+    Update Network Live database with Beeline cells for given technology.
+
+    Args:
+        vendor (str): a vendor name (Huawei or Nokia)
+        technology (str): the RAN technology
+
+    Returns:
+        str: update result
+    """
     atoll_data = select_atoll_data(technology)
     cells = beeline_main(vendor, technology, atoll_data)
-    # return cells
     return update_network_live(cells, f'Beeline {vendor}', technology)
 
 
 def update_zte(technology):
+    """
+    Update Network Live database with ZTE cells for given technology.
+
+    Args:
+        technology (str): the RAN technology
+
+    Returns:
+        str: update result
+    """
     atoll_data = select_atoll_data(technology)
     cells = zte_main(technology, atoll_data)
-    # return cells
     return update_network_live(cells, 'ZTE', technology)
 
 
 def update_nl():
+    """Update Network Live database with all cells for given technology."""
     technologies = ['NR', 'LTE', 'WCDMA', 'GSM']
     atoll_data = {tech: select_atoll_data(tech) for tech in technologies}
     results = []
@@ -103,4 +137,6 @@ def update_nl():
             results.append(f'{bee_hua_tech} Beeline Huawei fail')
         print(results[-1])
 
-    return results
+    to = 'ramil.albakov@kcell.kz'
+    message = '\n'.join(sorted(results))
+    send_email(to, 'Network Live update report', message)

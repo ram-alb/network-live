@@ -92,6 +92,15 @@ def parse_nokia_gsm_cells(logs_path, atoll_data):
 
 
 def gsm_main(atoll_data):
+    """
+    Prepare shared by Beeline Nokia gsm cell data for Network Live.
+
+    Args:
+        atoll_data (dict): a dict of cell physical params
+
+    Returns:
+        list: a list of dicts containing the parameters for each GSM cell
+    """
     logs_path = 'logs/beeline'
     download_ftp_logs('beeline_nokia_gu')
     return parse_nokia_gsm_cells(logs_path, atoll_data)

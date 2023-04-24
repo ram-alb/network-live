@@ -45,7 +45,7 @@ def parse_hopping_params(param_type, gsm_params, line):
         start_index = channel_group_index + tch_start_delta
         last_index = channel_group_index + tch_start_delta + index_delta
     hopp_param_list = [
-        hopp for hopp in line.split(' ')[start_index:last_index] if hopp != 'NULL'
+        hop for hop in line.split(' ')[start_index:last_index] if hop != 'NULL'
     ]
     return ', '.join(hopp_param_list)
 
@@ -113,8 +113,16 @@ def parse_gsm_cells(log_path, atoll_data):
 
 
 def gsm_main(atoll_data):
+    """
+    Prepare enm gsm cell data for Network Live.
+
+    Args:
+        atoll_data (dict): a dict of cell physical params
+
+    Returns:
+        list: a list of dicts containing the parameters for each GSM cell
+    """
     cna_result = collect_oss_logs('GSM')
-    # log_path = 'logs/oss/network_live_gsm_export.txt'
     if '100%' in cna_result:
         log_path = download_oss_logs('GSM')
 

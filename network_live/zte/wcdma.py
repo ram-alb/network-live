@@ -1,6 +1,7 @@
-from network_live.zte.select_data import select_zte_data
-from network_live.physical_params import add_physical_params
 from datetime import date
+
+from network_live.physical_params import add_physical_params
+from network_live.zte.select_data import select_zte_data
 
 
 def parse_wcdma_cells(zte_cell_data, zte_rnc_data, atoll_data):
@@ -74,6 +75,15 @@ def parse_wcdma_cells(zte_cell_data, zte_rnc_data, atoll_data):
 
 
 def wcdma_main(atoll_data):
+    """
+    Prepare ZTE wcdma cell data for Network Live.
+
+    Args:
+        atoll_data (dict): a dict of cell physical params
+
+    Returns:
+        list: a list of dicts containing the parameters for each WCDMA cell
+    """
     zte_rnc_data = select_zte_data('rnc')
     zte_wcdma_cell_data = select_zte_data('wcdma_cell')
     return parse_wcdma_cells(zte_wcdma_cell_data, zte_rnc_data, atoll_data)

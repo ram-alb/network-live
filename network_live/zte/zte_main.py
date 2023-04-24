@@ -1,8 +1,18 @@
-from network_live.zte.wcdma import wcdma_main
 from network_live.zte.gsm import gsm_main
+from network_live.zte.wcdma import wcdma_main
 
 
 def zte_main(technology, atoll_data):
+    """
+    Return a list of dicts with cell parameters of specified technology.
+
+    Parameters:
+        technology (str): the RAN technology to query
+        atoll_data (dict): a dict with cell physical params
+
+    Returns:
+        list: a list of dictionaries containing cell parameters
+    """
     main_funcs = {
         'WCDMA': wcdma_main,
         'GSM': gsm_main,

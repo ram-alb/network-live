@@ -46,6 +46,9 @@ def download_oss_logs(technology):
 
     Args:
         technology: string
+
+    Returns:
+        str: local log path
     """
     if technology == 'WCDMA':
         remote_path = '/home/anpusr/bcg_filters/export/oss_utrancells.xml'
@@ -86,6 +89,15 @@ def unzip_log(zipfile_path):
 
 
 def get_date(operator):
+    """
+    Get logs date.
+
+    Args:
+        operator (str): an operator name
+
+    Returns:
+        str: a date in needed format
+    """
     date_formats = {
         'tele2': '%Y%m%{d}'.format(d='d'),
         'beeline': '%{d}.%m.%Y'.format(d='d'),
@@ -125,8 +137,6 @@ def download_bee250_huawei_xml(local_path):
                         log=log,
                     )
                     sftp.get(remote_log_path, local_log_path)
-                    # unzip_log(local_log_path)
-                    # os.remove(local_log_path)
 
 
 def download_ftp_logs(operator, is_unzip=True):

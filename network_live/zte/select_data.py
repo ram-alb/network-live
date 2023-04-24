@@ -2,7 +2,6 @@ import os
 
 import cx_Oracle
 
-
 rnc_select = """
     SELECT
         USERLABEL as rnc_name,

@@ -35,8 +35,10 @@ def update_enm2_wcdma():
 
 
 def update_enm1_gsm():
+    """Update Network Live with ENM1 gsm cells."""
     print(update_enm('ENM1', 'GSM'))
 
 
 def update_enm2_gsm():
+    """Update Network Live with ENM2 gsm cells."""
     print(update_enm('ENM2', 'GSM'))

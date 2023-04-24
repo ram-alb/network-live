@@ -1,4 +1,20 @@
 [[package]]
+name = "anpusr-mail"
+version = "0.1.0"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.8,<4.0"
+
+[package.dependencies]
+python-dotenv = ">=1.0.0,<2.0.0"
+validate_email = ">=1.3,<2.0"
+
+[package.source]
+type = "file"
+url = "../local_packages/anpusr_mail-0.1.0-py3-none-any.whl"
+
+[[package]]
 name = "astor"
 version = "0.8.1"
 description = "Read/rewrite/write Python ASTs"
@@ -701,6 +717,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "validate_email"
+version = "1.3"
+description = "Validate_email verify if an email address is valid and really exists."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "wemake-python-styleguide"
 version = "0.17.0"
 description = "The strictest and most opinionated python linter ever"
@@ -732,9 +756,12 @@ typing_extensions = ">=4.0,<5.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "ddfedddbb7b3d58e0a1675d304b339ac50e31becc3a7b433f0d0c09dab5d3056"
+content-hash = "2dcf88b2f3ddbb4e6052a5168026e832a8a37f11c5951d2ec432fbfafa7c6f57"
 
 [metadata.files]
+anpusr-mail = [
+    {file = "anpusr_mail-0.1.0-py3-none-any.whl", hash = "sha256:2438c5f4172d6991ecd967c379ad97a07d87e4f8ec20687e9c693b5706672950"},
+]
 astor = [
     {file = "astor-0.8.1-py2.py3-none-any.whl", hash = "sha256:070a54e890cefb5b3739d19f30f5a5ec840ffc9c50ffa7d23cc9fc1a38ebbfc5"},
     {file = "astor-0.8.1.tar.gz", hash = "sha256:6a6effda93f4e1ce9f618779b2dd1d9d84f1e32812c23a29b3fff6fd7f63fa5e"},
@@ -1182,6 +1209,9 @@ tomli = [
 typing-extensions = [
     {file = "typing_extensions-4.5.0-py3-none-any.whl", hash = "sha256:fb33085c39dd998ac16d1431ebc293a8b3eedd00fd4a32de0ff79002c19511b4"},
     {file = "typing_extensions-4.5.0.tar.gz", hash = "sha256:5cb5f4a79139d699607b3ef622a1dedafa84e115ab0024e0d9c044a9479ca7cb"},
+]
+validate_email = [
+    {file = "validate_email-1.3.tar.gz", hash = "sha256:784719dc5f780be319cdd185dc85dd93afebdb6ebb943811bc4c7c5f9c72aeaf"},
 ]
 wemake-python-styleguide = [
     {file = "wemake-python-styleguide-0.17.0.tar.gz", hash = "sha256:c8869fac392019c2bb3eae4287399245d10d2726b23f1b3c68d1564909c3a71a"},

@@ -322,7 +322,7 @@ def parse_wcdma_cells(xml_path, enm_sites, enm_ips, atoll_data):
 
 def wcdma_main(atoll_data):
     """
-    Prepare enm wcdma cell data for Network Live.
+    Prepare oss wcdma cell data for Network Live.
 
     Args:
         atoll_data (dict): a dict of cell physical params
@@ -344,8 +344,6 @@ def wcdma_main(atoll_data):
         enm1_dus_oam_ips + enm2_dus_oam_ips,
         'MeContext',
     )
-
-    # xml_path = 'logs/oss/oss_utrancells.xml'
 
     bcg_result = collect_oss_logs('WCDMA')
     if 'Export has succeeded' in bcg_result:

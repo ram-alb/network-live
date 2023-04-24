@@ -58,13 +58,22 @@ def parse_nokia_wcdma_cells(logs_path, atoll_data):
             'localCellId': cell_id,
             'uarfcnDl': uarfcndl,
             'uarfcnUl': uarfcnul[uarfcndl],
-            'primaryScramblingCode': parse_cell_parameter(cell_tag, 'PriScrCode'),
+            'primaryScramblingCode': parse_cell_parameter(
+                cell_tag,
+                'PriScrCode',
+            ),
             'LocationArea': parse_cell_parameter(cell_tag, 'LAC'),
             'RoutingArea': parse_cell_parameter(cell_tag, 'RAC'),
             'ServiceArea': parse_cell_parameter(cell_tag, 'SAC'),
             'Ura': None,
-            'primaryCpichPower': parse_cell_parameter(cell_tag, 'PtxPrimaryCPICH'),
-            'maximumTransmissionPower': parse_cell_parameter(cell_tag, 'PtxCellMax'),
+            'primaryCpichPower': parse_cell_parameter(
+                cell_tag,
+                'PtxPrimaryCPICH',
+            ),
+            'maximumTransmissionPower': parse_cell_parameter(
+                cell_tag,
+                'PtxCellMax',
+            ),
             'IubLink': None,
             'MocnCellProfile': None,
             'administrativeState': cell_state,
@@ -81,6 +90,15 @@ def parse_nokia_wcdma_cells(logs_path, atoll_data):
 
 
 def wcdma_main(atoll_data):
+    """
+    Prepare shared by Beeline Nokia wcdma cell data for Network Live.
+
+    Args:
+        atoll_data (dict): a dict of cell physical params
+
+    Returns:
+        list: a list of dicts containing the parameters for each WCDMA cell
+    """
     logs_path = 'logs/beeline'
 
     download_ftp_logs('beeline_nokia_250', is_unzip=False)

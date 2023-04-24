@@ -5,4 +5,5 @@ load_dotenv()
 
 
 def main():
+    """Update Network Live with all cells."""
     print(update_nl())

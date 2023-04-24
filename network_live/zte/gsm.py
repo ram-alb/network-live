@@ -1,6 +1,7 @@
-from network_live.zte.select_data import select_zte_data
 from datetime import date
+
 from network_live.physical_params import add_physical_params
+from network_live.zte.select_data import select_zte_data
 
 
 def parse_gsm_cells(zte_gsm_data, atoll_data):
@@ -56,10 +57,12 @@ def parse_gsm_cells(zte_gsm_data, atoll_data):
             bcch_trx_cells.append(cell)
 
     for bcch_cell in bcch_trx_cells:
-        one_trx_cells = list(filter(
-            lambda cell: cell['cell_name'] == bcch_cell['cell_name'] and cell['bsc_name'] == bcch_cell['bsc_name'],
-            gsm_cells,
-        ))
+        one_trx_cells = []
+        for gsm_cell in gsm_cells:
+            if gsm_cell['cell_name'] == bcch_cell['cell_name']:
+                if gsm_cell['bsc_name'] == bcch_cell['bsc_name']:
+                    one_trx_cells.append(gsm_cell)
+
         if not one_trx_cells:
             gsm_cells.append(
                 add_physical_params(atoll_data, bcch_cell),
@@ -69,5 +72,14 @@ def parse_gsm_cells(zte_gsm_data, atoll_data):
 
 
 def gsm_main(atoll_data):
+    """
+    Prepare  gsm cell data for Network Live.
+
+    Args:
+        atoll_data (dict): a dict of cell physical params
+
+    Returns:
+        list: a list of dicts containing the parameters for each GSM cell
+    """
     zte_gsm_data = select_zte_data('gsm_cell')
     return parse_gsm_cells(zte_gsm_data, atoll_data)
