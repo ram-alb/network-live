@@ -1,10 +1,10 @@
+from anpusr_mail import send_email
 from network_live.beeline.beeline_main import beeline_main
 from network_live.enm.enm_main import enm_main
 from network_live.oss.oss_main import oss_main
 from network_live.sql import select_atoll_data, update_network_live
 from network_live.tele2.tele2_main import tele2_main
 from network_live.zte.zte_main import zte_main
-from anpusr_mail import send_email
 
 
 def update_enm(enm, technology):
