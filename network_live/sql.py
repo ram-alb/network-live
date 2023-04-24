@@ -142,7 +142,7 @@ def select_atoll_data(technology):
 
 lte_insert_sql = """
     INSERT
-        INTO ltecells3
+        INTO ltecells2
     VALUES (
         :subnetwork,
         :enodeb_id,
@@ -170,7 +170,7 @@ lte_insert_sql = """
 
 wcdma_insert_sql = """
     INSERT
-        INTO wcdmacells3
+        INTO wcdmacells2
     VALUES (
         :operator,
         :rnc_id,
@@ -206,7 +206,7 @@ wcdma_insert_sql = """
 
 gsm_insert_sql = """
     INSERT
-        INTO gsmcells3
+        INTO gsmcells2
     VALUES (
         :operator,
         :bsc_id,
@@ -234,7 +234,7 @@ gsm_insert_sql = """
 
 nr_insert_sql = """
     INSERT
-        INTO nrcells2
+        INTO nrcells
     VALUES (
         :subnetwork,
         :gNBId,
@@ -281,10 +281,10 @@ def update_network_live(cells, oss, technology):
         'NR': nr_insert_sql,
     }
     network_live_tables = {
-        'LTE': 'ltecells3',
-        'WCDMA': 'wcdmacells3',
-        'GSM': 'gsmcells3',
-        'NR': 'nrcells2',
+        'LTE': 'ltecells2',
+        'WCDMA': 'wcdmacells2',
+        'GSM': 'gsmcells2',
+        'NR': 'nrcells',
     }
 
     delete_sql = "DELETE FROM {table} WHERE oss='{oss}'".format(
