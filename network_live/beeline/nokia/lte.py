@@ -2,6 +2,7 @@ import os
 import re
 from datetime import date
 
+from network_live.beeline.unwanted_cells import unwanted_lte_cells
 from network_live.ftp import download_ftp_logs
 from network_live.physical_params import add_physical_params
 
@@ -144,7 +145,10 @@ def parse_lncel_params(log_lines):
             cell = {'cellId': parse_cell_id(line)}
         if lncel_class:
             if 'name="name"' in line:
-                cell['cell_name'] = parse_parameter_value(line)
+                cell_name = parse_parameter_value(line)
+                if cell_name in unwanted_lte_cells:
+                    continue
+                cell['cell_name'] = cell_name
             if 'name="administrativeState"' in line:
                 if parse_parameter_value(line) == '1':
                     cell['administrativeState'] = 'UNLOCKED'

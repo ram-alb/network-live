@@ -2,6 +2,7 @@ import os
 from datetime import date
 
 from defusedxml import ElementTree
+from network_live.beeline.unwanted_cells import unwanted_lte_cells
 from network_live.ftp import download_ftp_logs
 from network_live.physical_params import add_physical_params
 
@@ -166,7 +167,10 @@ def parse_huawei_xml(xml_path, sharing, atoll_data):
             else:
                 cell_state = 'LOCKED'
 
-            cell['cell_name'] = parse_tag_text('CellName', element)
+            cell_name = parse_tag_text('CellName', element)
+            if cell_name in unwanted_lte_cells:
+                continue
+            cell['cell_name'] = cell_name
             cell['cellId'] = cell_id
             cell['earfcndl'] = parse_tag_text('DlEarfcn', element)
             cell['administrativeState'] = cell_state
