@@ -15,6 +15,7 @@ def parse_fdn(fdn, mo_type):
     re_patterns = {
         'SubNetwork': ',SubNetwork=[^,]*',
         'MeContext': 'MeContext=[^,]*',
+        'ManagedElement': 'ManagedElement=[^,]*',
         'NRSectorCarrier': 'NRSectorCarrier=.*',
         'NRCellDU': 'NRCellDU=.*',
         'EUtranCellFDD': 'EUtranCellFDD=[^,]*',
@@ -26,7 +27,13 @@ def parse_fdn(fdn, mo_type):
     }
 
     mo_value_index = -1
-    mo = re.search(re_patterns[mo_type], fdn).group()
+    if mo_type == 'MeContext':
+        try:
+            mo = re.search(re_patterns['MeContext'], fdn).group()
+        except AttributeError:
+            mo = re.search(re_patterns['ManagedElement'], fdn).group()
+    else:
+        mo = re.search(re_patterns[mo_type], fdn).group()
 
     return mo.split('=')[mo_value_index]
 
