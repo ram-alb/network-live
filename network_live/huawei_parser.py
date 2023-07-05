@@ -216,6 +216,7 @@ def parse_gsm_cells(xml_path, operator, atoll_data):
     Returns:
         list of dicts
     """
+    oss = 'Tele2' if operator == 'Tele2' else 'Beeline Huawei'
     root = ElementTree.parse(xml_path).getroot()
     bsc_name = get_controller_name(root)
 
@@ -243,13 +244,21 @@ def parse_gsm_cells(xml_path, operator, atoll_data):
             hsn = all_magrp_attrs[cell_id]['HSN']
         except KeyError:
             hsn = None
+        try:
+            bcch = trx_parameters[cell_id]['bcchNo']
+        except KeyError:
+            bcch = None
+        try:
+            dch = ', '.join(trx_parameters[cell_id]['tch_freqs'])
+        except KeyError:
+            dch = None
         if cell_attrs[cell_id]['ACTSTATUS'] == '1':
             cell_state = 'ACTIVE'
         else:
             cell_state = 'HALTED'
         cell = {
             'operator': operator,
-            'oss': 'Tele2',
+            'oss': oss,
             'bsc_id': None,
             'bsc_name': bsc_name,
             'site_name': site_names[cell_id],
@@ -258,10 +267,10 @@ def parse_gsm_cells(xml_path, operator, atoll_data):
             'ncc': cell_attrs[cell_id]['NCC'],
             'lac': cell_attrs[cell_id]['LAC'],
             'cell_id': cell_attrs[cell_id]['CI'],
-            'bcchNo': trx_parameters[cell_id]['bcchNo'],
+            'bcchNo': bcch,
             'hsn': hsn,
             'maio': None,
-            'dchNo': ', '.join(trx_parameters[cell_id]['tch_freqs']),
+            'dchNo': dch,
             'state': cell_state,
             'vendor': 'Huawei',
             'insert_date': date.today(),

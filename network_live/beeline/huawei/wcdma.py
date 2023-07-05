@@ -15,7 +15,7 @@ def wcdma_main(atoll_data):
         list: a list of dicts containing the parameters for each WCDMA cell
     """
     logs_path = 'logs/beeline'
-    download_bee250_huawei_xml(logs_path)
+    download_bee250_huawei_xml(logs_path, 'WCDMA')
     log_name = os.listdir(logs_path)[0]
     xml_path = f'{logs_path}/{log_name}'
     return parse_huawei_wcdma_cells(xml_path, 'Beeline', atoll_data)

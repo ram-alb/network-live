@@ -108,7 +108,7 @@ def get_date(operator):
     return (now - timedelta(days=2)).strftime(date_format)
 
 
-def download_bee250_huawei_xml(local_path):
+def download_bee250_huawei_xml(local_path, technology):
     """
     Download Beeline Huawei xml file for 250 project.
 
@@ -122,12 +122,19 @@ def download_bee250_huawei_xml(local_path):
     remote_path = '/reporter/beeline/250/CM/{date}'.format(date=date)
     delete_old_logs(local_path)
 
+    file_markers = {
+        'GSM': 'GNBIExport_XML_RT',
+        'WCDMA': 'UNBIExport_XML_RT',
+    }
+
+    file_marker = file_markers[technology]
+
     with paramiko.Transport((host)) as transport:
         transport.connect(username=login, password=password)
         with paramiko.SFTPClient.from_transport(transport) as sftp:
             file_list = sftp.listdir(remote_path)
             for log in file_list:
-                if 'UNBIExport_XML_RT' in log:
+                if file_marker in log:
                     remote_log_path = '{remote_path}/{log}'.format(
                         remote_path=remote_path,
                         log=log,

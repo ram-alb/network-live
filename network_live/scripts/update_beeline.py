@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from network_live.main import update_beeline
+from network_live.beeline.huawei.gsm import gsm_main
 
 load_dotenv()
 
@@ -12,6 +13,10 @@ def update_huawei_lte():
 def update_huawei_wcdma():
     """Update Network Live with Huawei WCDMA cells."""
     print(update_beeline('Huawei', 'WCDMA'))
+
+
+def update_huawei_gsm():
+    print(update_beeline('Huawei', 'GSM'))
 
 
 def update_nokia_lte():
