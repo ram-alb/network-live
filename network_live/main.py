@@ -129,7 +129,7 @@ def update_nl():
             results.append(f'{tele2_nokia_tech} Beeline Nokia fail')
         print(results[-1])
 
-    for bee_hua_tech in technologies[1:3]:
+    for bee_hua_tech in technologies[1:]:
         try:
             bee_hua_cells = beeline_main('Huawei', bee_hua_tech, atoll_data[bee_hua_tech])
             results.append(update_network_live(bee_hua_cells, 'Beeline Huawei', bee_hua_tech))
