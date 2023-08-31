@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
-from network_live.main import update_beeline
 from network_live.beeline.huawei.gsm import gsm_main
+from network_live.main import update_beeline
 
 load_dotenv()
 

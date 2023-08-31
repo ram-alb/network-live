@@ -158,6 +158,7 @@ def parse_huawei_xml(xml_path, sharing, atoll_data):
             'vendor': 'Huawei',
             'insert_date': date.today(),
             'cellRange': None,
+            'primaryPlmnReserved': None,
         }
         cell_id = parse_tag_text('LocalCellId', element)
 

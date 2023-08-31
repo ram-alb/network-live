@@ -199,6 +199,7 @@ def parse_nokia_xml(xml_path, atoll_data):
         lncel['insert_date'] = date.today()
         lncel['oss'] = 'Beeline Nokia'
         lncel['cellRange'] = None
+        lncel['primaryPlmnReserved'] = None
         lte_nokia_cells.append(
             add_physical_params(atoll_data, lncel),
         )

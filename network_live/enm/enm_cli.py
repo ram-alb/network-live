@@ -31,6 +31,7 @@ class EnmCli(object):
         'rachRootSequence',
         'tac',
         'cellRange',
+        'primaryPlmnReserved',
     ]
 
     wcdma_cell_params = [

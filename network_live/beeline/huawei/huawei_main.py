@@ -1,6 +1,6 @@
+from network_live.beeline.huawei.gsm import gsm_main
 from network_live.beeline.huawei.lte import lte_main
 from network_live.beeline.huawei.wcdma import wcdma_main
-from network_live.beeline.huawei.gsm import gsm_main
 
 
 def huawei_main(technology, atoll_data):

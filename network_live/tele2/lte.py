@@ -71,6 +71,7 @@ def parse_lte(log_path, atoll_data):
             )
             lte_cell['physicalLayerCellId'] = row['Physical cell ID']
             lte_cell['cellRange'] = None
+            lte_cell['primaryPlmnReserved'] = None
 
             lte_cells.append(
                 add_physical_params(atoll_data, lte_cell),
