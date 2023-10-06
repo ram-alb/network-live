@@ -99,6 +99,7 @@ class EnmCli(object):
             params=','.join(gsm_channel_params),
         ),
         'bsc_ids': 'cmedit get * Bsc.(bscId)',
+        'all_rnc': 'cmedit get *RNC*',
     }
 
     @classmethod

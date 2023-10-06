@@ -150,6 +150,23 @@ def parse_wcdma_cells(enm, enm_wcdma_cells, last_parameter, atoll_data, *args):
     return wcdma_cells
 
 
+def get_enm_wcdma_cells(enm):
+    cell_params = EnmCli.wcdma_cell_params
+    enm_rncs = EnmCli.execute_cli_command(enm, 'all_rnc')
+    all_rnc = []
+    for element in enm_rncs:
+        element_val = element.value()
+        if 'FDN' in element_val:
+            rnc = element_val.split('=')[-1]
+            all_rnc.append(rnc)
+    enm_wcdma_cells = []
+    for rnc in all_rnc:
+        cli_command = f'cmedit get {rnc} UtranCell.({",".join(cell_params)})'
+        EnmCli.cli_commands['wcdma_cells2'] = cli_command
+        enm_wcdma_cells += EnmCli.execute_cli_command(enm, 'wcdma_cells2')
+    return enm_wcdma_cells
+
+
 def wcdma_main(enm, atoll_data):
     """
     Prepare WCDMA cell data to update Network Live db.
@@ -180,7 +197,8 @@ def wcdma_main(enm, atoll_data):
     rnc_ids = parse_node_parameter(enm_rnc_ids, me_context)
 
     last_parameter = sorted(EnmCli.wcdma_cell_params)[-1]
-    enm_wcdma_cells = EnmCli.execute_cli_command(enm, 'wcdma_cells')
+    # enm_wcdma_cells = EnmCli.execute_cli_command(enm, 'wcdma_cells')
+    enm_wcdma_cells = get_enm_wcdma_cells(enm)
     return parse_wcdma_cells(
         enm,
         enm_wcdma_cells,
