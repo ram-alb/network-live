@@ -92,6 +92,8 @@ def update_nl():
 
     for enm in ('ENM1', 'ENM2'):
         for enm_tech in technologies:
+            if enm == 'ENM1' and enm_tech == 'WCDMA':
+                continue
             try:
                 enm_cells = enm_main(enm, enm_tech, atoll_data[enm_tech])
                 results.append(update_network_live(enm_cells, enm, enm_tech))
