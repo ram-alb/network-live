@@ -17,3 +17,7 @@ def update_wcdma():
 def update_gsm():
     """Update Network Live with Tele2 GSM cells."""
     print(update_tele2('GSM'))
+
+
+def update_nr():
+    print(update_tele2('NR'))

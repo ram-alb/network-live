@@ -165,6 +165,7 @@ def download_ftp_logs(operator, is_unzip=True):
     bee250_path = '/reporter/beeline/250/CM'
 
     ftp_paths = {
+        'tele2_nr': '/reporter/tele2/5GData/{date}/5G_Kcell_CM-{date}.xlsx'.format(date=date),
         'tele2_lte': '/reporter/tele2/mocn/{date}/Config_result_data_{date}.zip'.format(date=date),
         'tele2_lte_250': '/reporter/tele2/250plus/{date}/Config_result_data_{date}.zip'.format(
             date=date,

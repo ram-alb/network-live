@@ -116,19 +116,20 @@ def update_nl():
             results.append(f'{oss_zte_tech} ZTE fail')
         print(results[-1])
 
-    for tele2_nokia_tech in technologies[1:]:
+    for tele2_tech in technologies:
         try:
-            tele2_cells = tele2_main(tele2_nokia_tech, atoll_data[tele2_nokia_tech])
-            results.append(update_network_live(tele2_cells, 'Tele2', tele2_nokia_tech))
+            tele2_cells = tele2_main(tele2_tech, atoll_data[tele2_tech])
+            results.append(update_network_live(tele2_cells, 'Tele2', tele2_tech))
         except:
-            results.append(f'{tele2_nokia_tech} Tele2 fail')
+            results.append(f'{tele2_tech} Tele2 fail')
         print(results[-1])
 
+    for nokia_tech in technologies[1:]:
         try:
-            bee_nokia_cells = beeline_main('Nokia', tele2_nokia_tech, atoll_data[tele2_nokia_tech])
-            results.append(update_network_live(bee_nokia_cells, 'Beeline Nokia', tele2_nokia_tech))
+            bee_nokia_cells = beeline_main('Nokia', nokia_tech, atoll_data[nokia_tech])
+            results.append(update_network_live(bee_nokia_cells, 'Beeline Nokia', nokia_tech))
         except:
-            results.append(f'{tele2_nokia_tech} Beeline Nokia fail')
+            results.append(f'{nokia_tech} Beeline Nokia fail')
         print(results[-1])
 
     for bee_hua_tech in technologies[1:]:
