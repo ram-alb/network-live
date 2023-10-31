@@ -258,7 +258,8 @@ nr_insert_sql = """
         :height,
         :longitude,
         :latitude,
-        :insert_date
+        :insert_date,
+        :ssbFrequency
     )
 """
 

@@ -14,6 +14,7 @@ class EnmCli(object):
         'nRTAC',
         'qRxLevMin',
         'rachRootSequence',
+        'ssbFrequency',
     ]
 
     nr_sector_params = [
