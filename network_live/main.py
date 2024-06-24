@@ -90,10 +90,8 @@ def update_nl():
     atoll_data = {tech: select_atoll_data(tech) for tech in technologies}
     results = []
 
-    for enm in ('ENM1', 'ENM2'):
+    for enm in ('ENM2', 'ENM4'):
         for enm_tech in technologies:
-            if enm == 'ENM1' and enm_tech == 'WCDMA':
-                continue
             try:
                 enm_cells = enm_main(enm, enm_tech, atoll_data[enm_tech])
                 results.append(update_network_live(enm_cells, enm, enm_tech))
@@ -101,14 +99,16 @@ def update_nl():
                 results.append(f'{enm_tech} {enm} fail')
             print(results[-1])
 
-    for oss_zte_tech in technologies[2:]:
-        try:
-            oss_cells = oss_main(oss_zte_tech, atoll_data[oss_zte_tech])
-            results.append(update_network_live(oss_cells, 'OSS', oss_zte_tech))
-        except:
-            results.append(f'{oss_zte_tech} OSS fail')
-        print(results[-1])
+    """
+    try:
+        oss_cells = oss_main('GSM', atoll_data['GSM'])
+        results.append(update_network_live(oss_cells, 'OSS', 'GSM'))
+    except:
+        results.append(f'{oss_zte_tech} OSS fail')
+    print(results[-1])
+    """
 
+    for oss_zte_tech in technologies[2:]:
         try:
             zte_cells = zte_main(oss_zte_tech, atoll_data[oss_zte_tech])
             results.append(update_network_live(zte_cells, 'ZTE', oss_zte_tech))
@@ -132,7 +132,7 @@ def update_nl():
             results.append(f'{nokia_tech} Beeline Nokia fail')
         print(results[-1])
 
-    for bee_hua_tech in technologies[1:]:
+    for bee_hua_tech in technologies[2:]:
         try:
             bee_hua_cells = beeline_main('Huawei', bee_hua_tech, atoll_data[bee_hua_tech])
             results.append(update_network_live(bee_hua_cells, 'Beeline Huawei', bee_hua_tech))

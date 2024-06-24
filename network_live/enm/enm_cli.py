@@ -119,7 +119,8 @@ class EnmCli(object):
             enm_server = os.getenv('ENM_SERVER_1')
         elif enm_number == 'ENM2':
             enm_server = os.getenv('ENM_SERVER_2')
-
+        elif enm_number == 'ENM4':
+            enm_server = os.getenv('ENM_SERVER_4')
         session = enmscripting.open(enm_server).with_credentials(
             enmscripting.UsernameAndPassword(
                 os.getenv('ENM_LOGIN'),

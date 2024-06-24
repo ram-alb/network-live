@@ -30,7 +30,10 @@ def execute_sql(sql_type, sql_command, sql_params=None):
             cursor.execute(sql_command)
             connection.commit()
         elif sql_type == 'insert':
-            cursor.executemany(sql_command, sql_params)
+            for cell in sql_params:
+                if cell['rnc_name'] == 'AKTB_RNC_1':
+                    print(cell)
+                cursor.execute(sql_command, cell)
             connection.commit()
         elif sql_type == 'select':
             cursor.execute(sql_command)
