@@ -1,6 +1,6 @@
 import os
 
-import cx_Oracle
+import oracledb
 
 
 def execute_sql(sql_type, sql_command, sql_params=None):
@@ -15,29 +15,24 @@ def execute_sql(sql_type, sql_command, sql_params=None):
     Returns:
         Union[None, list]: the results of the query in case of 'select' command
     """
-    atoll_dsn = cx_Oracle.makedsn(
-        os.getenv('ATOLL_HOST'),
-        os.getenv('ATOLL_PORT'),
+    dsn = '{username}/{userpwd}@{host}:{port}/{service_name}'.format(
+        username=os.getenv('ATOLL_LOGIN'),
+        userpwd=os.getenv('ATOLL_PASSWORD'),
+        host=os.getenv('ATOLL_HOST'),
+        port=os.getenv('ATOLL_PORT'),
         service_name=os.getenv('SERVICE_NAME'),
     )
-    with cx_Oracle.connect(
-        user=os.getenv('ATOLL_LOGIN'),
-        password=os.getenv('ATOLL_PASSWORD'),
-        dsn=atoll_dsn,
-    ) as connection:
-        cursor = connection.cursor()
-        if sql_type == 'delete':
-            cursor.execute(sql_command)
-            connection.commit()
-        elif sql_type == 'insert':
-            for cell in sql_params:
-                if cell['rnc_name'] == 'AKTB_RNC_1':
-                    print(cell)
-                cursor.execute(sql_command, cell)
-            connection.commit()
-        elif sql_type == 'select':
-            cursor.execute(sql_command)
-            return cursor.fetchall()
+    with oracledb.connect(dsn) as connection:
+        with connection.cursor() as cursor:
+            if sql_type == 'delete':
+                cursor.execute(sql_command)
+                connection.commit()
+            elif sql_type == 'insert':
+                cursor.executemany(sql_command, sql_params)
+                connection.commit()
+            elif sql_type == 'select':
+                cursor.execute(sql_command)
+                return cursor.fetchall()
 
 
 def handle_atoll_data(selected_atoll_data):
@@ -300,7 +295,7 @@ def update_network_live(cells, oss, technology):
     execute_sql('delete', delete_sql)
     try:
         execute_sql('insert', insert_sqls[technology], cells)
-    except cx_Oracle.Error as err:
+    except oracledb.Error as err:
         err_obj, = err.args
         print(err_obj.code)
         print(err_obj.message)

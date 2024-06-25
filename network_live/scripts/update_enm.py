@@ -4,9 +4,9 @@ from network_live.main import update_enm
 load_dotenv()
 
 
-def update_enm1_lte():
+def update_enm4_lte():
     """Update Network Live with ENM1 lte cells."""
-    print(update_enm('ENM1', 'LTE'))
+    print(update_enm('ENM4', 'LTE'))
 
 
 def update_enm2_lte():
@@ -14,9 +14,9 @@ def update_enm2_lte():
     print(update_enm('ENM2', 'LTE'))
 
 
-def update_enm1_nr():
+def update_enm4_nr():
     """Update Network Live with ENM1 nr cells."""
-    print(update_enm('ENM1', 'NR'))
+    print(update_enm('ENM4', 'NR'))
 
 
 def update_enm2_nr():
@@ -24,9 +24,9 @@ def update_enm2_nr():
     print(update_enm('ENM2', 'NR'))
 
 
-def update_enm1_wcdma():
+def update_enm4_wcdma():
     """Update Network Live with ENM1 wcdma cells."""
-    print(update_enm('ENM1', 'WCDMA'))
+    print(update_enm('ENM4', 'WCDMA'))
 
 
 def update_enm2_wcdma():
@@ -34,9 +34,9 @@ def update_enm2_wcdma():
     print(update_enm('ENM2', 'WCDMA'))
 
 
-def update_enm1_gsm():
+def update_enm4_gsm():
     """Update Network Live with ENM1 gsm cells."""
-    print(update_enm('ENM1', 'GSM'))
+    print(update_enm('ENM4', 'GSM'))
 
 
 def update_enm2_gsm():
