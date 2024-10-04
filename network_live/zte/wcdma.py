@@ -71,7 +71,8 @@ def parse_wcdma_cells(zte_cell_data, zte_rnc_data, atoll_data):
         wcdma_cells.append(
             add_physical_params(atoll_data, cell),
         )
-    return wcdma_cells
+    uniq_wcdma_cells = [dict(t) for t in {tuple(cell.items()) for cell in wcdma_cells}]
+    return uniq_wcdma_cells
 
 
 def wcdma_main(atoll_data):
