@@ -2,9 +2,10 @@ from datetime import date
 
 from network_live.physical_params import add_physical_params
 from network_live.zte.select_data import select_zte_data
+from network_live.check_region import add_region, read_udrs
 
 
-def parse_gsm_cells(zte_gsm_data, atoll_data):
+def parse_gsm_cells(zte_gsm_data, atoll_data, udrs):
     """
     Parse ZTE GSM cell data.
 
@@ -50,8 +51,9 @@ def parse_gsm_cells(zte_gsm_data, atoll_data):
             'insert_date': date.today(),
         }
         if tch_freqs:
+            cell_with_phys_params = add_physical_params(atoll_data, cell)
             gsm_cells.append(
-                add_physical_params(atoll_data, cell),
+                add_region(cell_with_phys_params, udrs),
             )
         else:
             bcch_trx_cells.append(cell)
@@ -64,8 +66,9 @@ def parse_gsm_cells(zte_gsm_data, atoll_data):
                     one_trx_cells.append(gsm_cell)
 
         if not one_trx_cells:
+            cell_with_phys_params = add_physical_params(atoll_data, bcch_cell)
             gsm_cells.append(
-                add_physical_params(atoll_data, bcch_cell),
+                add_region(cell_with_phys_params, udrs),
             )
 
     return gsm_cells
@@ -82,4 +85,5 @@ def gsm_main(atoll_data):
         list: a list of dicts containing the parameters for each GSM cell
     """
     zte_gsm_data = select_zte_data('gsm_cell')
-    return parse_gsm_cells(zte_gsm_data, atoll_data)
+    udrs = read_udrs()
+    return parse_gsm_cells(zte_gsm_data, atoll_data, udrs)

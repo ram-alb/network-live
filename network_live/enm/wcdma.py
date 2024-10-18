@@ -7,6 +7,7 @@ from network_live.enm.utils import (
     parse_node_parameter,
 )
 from network_live.physical_params import add_physical_params
+from network_live.check_region import read_udrs, add_region
 
 me_context = 'MeContext'
 
@@ -111,7 +112,7 @@ def get_extra_data(iublink, rnc_name, site_names, rnc_ids, node_ips):
     }
 
 
-def parse_wcdma_cells(enm, enm_wcdma_cells, last_parameter, atoll_data, *args):
+def parse_wcdma_cells(enm, enm_wcdma_cells, last_parameter, atoll_data, udrs, *args):
     """
     Parse the parameters for all WCDMA cells.
 
@@ -144,8 +145,9 @@ def parse_wcdma_cells(enm, enm_wcdma_cells, last_parameter, atoll_data, *args):
                     cell['rnc_name'],
                     *args,
                 )
+                cell_with_phys_params = add_physical_params(atoll_data, {**cell, **extra_data})
                 wcdma_cells.append(
-                    add_physical_params(atoll_data, {**cell, **extra_data}),
+                    add_region(cell_with_phys_params, udrs),
                 )
     return wcdma_cells
 
@@ -199,11 +201,13 @@ def wcdma_main(enm, atoll_data):
     last_parameter = sorted(EnmCli.wcdma_cell_params)[-1]
     # enm_wcdma_cells = EnmCli.execute_cli_command(enm, 'wcdma_cells')
     enm_wcdma_cells = get_enm_wcdma_cells(enm)
+    udrs = read_udrs()
     return parse_wcdma_cells(
         enm,
         enm_wcdma_cells,
         last_parameter,
         atoll_data,
+        udrs,
         site_names,
         rnc_ids,
         node_oam_ips,

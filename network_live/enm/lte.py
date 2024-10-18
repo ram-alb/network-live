@@ -7,6 +7,7 @@ from network_live.enm.utils import (
     parse_node_parameter,
 )
 from network_live.physical_params import add_physical_params
+from network_live.check_region import read_udrs, add_region
 
 
 def get_extra_data(site_name, node_ids, node_ips):
@@ -46,7 +47,7 @@ def calculate_eci(enodeb_id, cell_id):
     return int_enodeb_id * eci_factor + int_cell_id
 
 
-def parse_lte_cells(enm, enm_lte_cells, last_parameter, atoll_data, *args):
+def parse_lte_cells(enm, enm_lte_cells, last_parameter, atoll_data, udrs, *args):
     """
     Parse the parameters for all LTE cells.
 
@@ -78,7 +79,8 @@ def parse_lte_cells(enm, enm_lte_cells, last_parameter, atoll_data, *args):
             cell[attr_name] = attr_value
             if attr_name == last_parameter:
                 cell['eci'] = calculate_eci(cell['enodeb_id'], cell['cellId'])
-                lte_cells.append(add_physical_params(atoll_data, cell))
+                cell_with_phys_params = add_physical_params(atoll_data, cell)
+                lte_cells.append(add_region(cell_with_phys_params, udrs))
     return lte_cells
 
 
@@ -105,12 +107,14 @@ def lte_main(enm, atoll_data):
     node_ips = {**bbu_oam_ips, **dus_oam_ips}
     last_parameter = sorted(EnmCli.lte_cell_params)[-1]
 
+    udrs = read_udrs()
     enm_lte_cells = EnmCli.execute_cli_command(enm, 'lte_cells')
     return parse_lte_cells(
         enm,
         enm_lte_cells,
         last_parameter,
         atoll_data,
+        udrs,
         enbids,
         node_ips,
     )

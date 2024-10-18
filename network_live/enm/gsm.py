@@ -6,6 +6,7 @@ from deepmerge import always_merger
 from network_live.enm.enm_cli import EnmCli
 from network_live.enm.utils import parse_fdn
 from network_live.physical_params import add_physical_params
+from network_live.check_region import add_region, read_udrs
 
 attr_delimeter = ' : '
 fdn_label = 'FDN'
@@ -165,7 +166,7 @@ def add_parameter(cell, parameter_str):
             cell[parameter_name] = parameter_value
 
 
-def parse_gsm_cells(enm, enm_gsm_cells, last_parameter, atoll_data, *args):
+def parse_gsm_cells(enm, enm_gsm_cells, last_parameter, atoll_data, udrs, *args):
     """
     Parse the parameters for all GSM cells.
 
@@ -195,7 +196,8 @@ def parse_gsm_cells(enm, enm_gsm_cells, last_parameter, atoll_data, *args):
             extra_data = get_extra_data(cell_name, bsc_name, *args)
             cell.update(extra_data)
             if last_parameter in cell.keys():
-                gsm_cells.append(add_physical_params(atoll_data, cell))
+                cell_with_phys_params = add_physical_params(atoll_data, cell)
+                gsm_cells.append(add_region(cell_with_phys_params, udrs))
     return gsm_cells
 
 
@@ -226,12 +228,14 @@ def gsm_main(enm, atoll_data):
     enm_channel_data = EnmCli.execute_cli_command(enm, 'channel_group')
     channel_data = parse_channel_group(enm_channel_data)
 
+    udrs = read_udrs()
     enm_gsm_cells = EnmCli.execute_cli_command(enm, 'gsm_cells')
     return parse_gsm_cells(
         enm,
         enm_gsm_cells,
         sorted(EnmCli.gsm_cell_params)[-1],
         atoll_data,
+        udrs,
         sites,
         channel_data,
     )

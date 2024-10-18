@@ -2,9 +2,10 @@ from datetime import date
 
 from network_live.physical_params import add_physical_params
 from network_live.zte.select_data import select_zte_data
+from network_live.check_region import add_region, read_udrs
 
 
-def parse_wcdma_cells(zte_cell_data, zte_rnc_data, atoll_data):
+def parse_wcdma_cells(zte_cell_data, zte_rnc_data, atoll_data, udrs):
     """
     Parse ZTE cell data.
 
@@ -68,8 +69,9 @@ def parse_wcdma_cells(zte_cell_data, zte_rnc_data, atoll_data):
             'qRxLevMin': qrxlevmin,
             'qQualMin': qqualmin,
         }
+        cell_with_phys_params = add_physical_params(atoll_data, cell)
         wcdma_cells.append(
-            add_physical_params(atoll_data, cell),
+            add_region(cell_with_phys_params, udrs),
         )
     uniq_wcdma_cells = [dict(t) for t in {tuple(cell.items()) for cell in wcdma_cells}]
     return uniq_wcdma_cells
@@ -87,4 +89,5 @@ def wcdma_main(atoll_data):
     """
     zte_rnc_data = select_zte_data('rnc')
     zte_wcdma_cell_data = select_zte_data('wcdma_cell')
-    return parse_wcdma_cells(zte_wcdma_cell_data, zte_rnc_data, atoll_data)
+    udrs = read_udrs()
+    return parse_wcdma_cells(zte_wcdma_cell_data, zte_rnc_data, atoll_data, udrs)

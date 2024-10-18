@@ -163,7 +163,8 @@ lte_insert_sql = """
         :longitude,
         :latitude,
         :insert_date,
-        :primaryPlmnReserved
+        :primaryPlmnReserved,
+        :region
     )
 """
 
@@ -199,7 +200,8 @@ wcdma_insert_sql = """
         :height,
         :longitude,
         :latitude,
-        :insert_date
+        :insert_date,
+        :region
     )
 """
 
@@ -227,7 +229,8 @@ gsm_insert_sql = """
         :height,
         :longitude,
         :latitude,
-        :insert_date
+        :insert_date,
+        :region
     )
 """
 
@@ -257,7 +260,8 @@ nr_insert_sql = """
         :longitude,
         :latitude,
         :insert_date,
-        :ssbFrequency
+        :ssbFrequency,
+        :region
     )
 """
 

@@ -7,6 +7,7 @@ from network_live.enm.utils import (
     parse_node_parameter,
 )
 from network_live.physical_params import add_physical_params
+from network_live.check_region import read_udrs, add_region
 
 attr_delimeter = ' : '
 
@@ -73,7 +74,7 @@ def get_nci(nci):
     return nci if nci.isnumeric() else None
 
 
-def parse_nr_cells(enm, enm_nr_cells, last_parameter, atoll_data, *args):
+def parse_nr_cells(enm, enm_nr_cells, last_parameter, atoll_data, udrs, *args):
     """
     Parse NR cell information from an Ericsson Network Manager (ENM) dump.
 
@@ -106,8 +107,9 @@ def parse_nr_cells(enm, enm_nr_cells, last_parameter, atoll_data, *args):
             cell[attr_name] = attr_value
             if attr_name == last_parameter:
                 cell['nCI'] = get_nci(cell['nCI'])
+                cell_with_phys_params = add_physical_params(atoll_data, cell)
                 nr_cells.append(
-                    add_physical_params(atoll_data, cell),
+                    add_region(cell_with_phys_params, udrs),
                 )
     return nr_cells
 
@@ -134,12 +136,14 @@ def nr_main(enm, atoll_data):
 
     last_parameter = sorted(EnmCli.nr_cell_params)[-1]
 
+    udrs = read_udrs()
     enm_nr_cells = EnmCli.execute_cli_command(enm, 'nr_cells')
     return parse_nr_cells(
         enm,
         enm_nr_cells,
         last_parameter,
         atoll_data,
+        udrs,
         nr_sectors,
         gnbids,
         bbu_oam_ips,

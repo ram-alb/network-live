@@ -10,6 +10,7 @@ from network_live.beeline.nokia.utils import (
 )
 from network_live.ftp import download_ftp_logs
 from network_live.physical_params import add_physical_params
+from network_live.check_region import add_region, read_udrs
 
 
 def parse_trx_params(root):
@@ -52,6 +53,7 @@ def parse_nokia_gsm_cells(logs_path, atoll_data):
     Returns:
         list of dicts
     """
+    udrs = read_udrs()
     root = ElementTree.parse(get_xml_path(logs_path, 'GSM')).getroot()
     sites = parse_sites(root, 'GSM')
     trxs = parse_trx_params(root)
@@ -85,8 +87,9 @@ def parse_nokia_gsm_cells(logs_path, atoll_data):
             'insert_date': date.today(),
             'oss': 'Beeline Nokia',
         }
+        cell_with_phys_params = add_physical_params(atoll_data, cell)
         gsm_cells.append(
-            add_physical_params(atoll_data, cell),
+            add_region(cell_with_phys_params, udrs),
         )
     return gsm_cells
 

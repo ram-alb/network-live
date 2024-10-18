@@ -3,6 +3,7 @@ from datetime import date
 
 from network_live.ftp import download_ftp_logs
 from network_live.physical_params import add_physical_params
+from network_live.check_region import read_udrs, add_region
 
 
 def convert_string_to_num(string_value):
@@ -23,7 +24,7 @@ def convert_string_to_num(string_value):
     return num_value
 
 
-def parse_lte(log_path, atoll_data):
+def parse_lte(log_path, atoll_data, udrs):
     """
     Parse lte cells shared by Tele2.
 
@@ -73,8 +74,9 @@ def parse_lte(log_path, atoll_data):
             lte_cell['cellRange'] = None
             lte_cell['primaryPlmnReserved'] = None
 
+            cell_with_phys_params = add_physical_params(atoll_data, lte_cell)
             lte_cells.append(
-                add_physical_params(atoll_data, lte_cell),
+                add_region(cell_with_phys_params, udrs),
             )
     return lte_cells
 
@@ -89,12 +91,13 @@ def lte_main(atoll_data):
     Returns:
         list: a list of dicts containing the parameters for each LTE cell
     """
+    udrs = read_udrs()
     log_path = 'logs/tele2/tele2_lte_log.csv'
 
     download_ftp_logs('tele2_lte')
-    cells = parse_lte(log_path, atoll_data)
+    cells = parse_lte(log_path, atoll_data, udrs)
 
     download_ftp_logs('tele2_lte_250')
-    cells += parse_lte(log_path, atoll_data)
+    cells += parse_lte(log_path, atoll_data, udrs)
 
     return cells
