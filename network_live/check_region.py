@@ -14,7 +14,7 @@ def read_udrs():
         'Karaganda-region': 'maps/karaganda-obl/karaganda-obl.shp',
         'Kostanay-region': 'maps/kostanay-obl/kostanay-obl.shp',
         'Kyzylorda-region': 'maps/kyzylorda-obl/kyzylorda-obl.shp',
-        'Mangystau-region': 'maps/mangystau-obl/mangystau-obl-polygon.shp',
+        'Mangystau-region': 'maps/mangystau-obl/mangystau-obl.shp',
         'Pavlodar-region': 'maps/pavlodar-obl/pavlodar-obl.shp',
         'North-Kazakhstan': 'maps/sko/sko.shp',
         'South-Kazakhstan': 'maps/uko/uko.shp',
