@@ -24,6 +24,10 @@ def convert_string_to_num(string_value):
     return num_value
 
 
+def str_to_int(value):
+    num = float(value)
+    return int(num)
+
 def parse_lte(log_path, atoll_data, udrs):
     """
     Parse lte cells shared by Tele2.
@@ -39,7 +43,7 @@ def parse_lte(log_path, atoll_data, udrs):
     with open(log_path, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         for row in csv_reader:
-            if row['Local tracking area ID'] != '2':
+            if row['Local tracking area ID'] not in {'2', '2.0'}:
                 continue
 
             if row['Cell admin state'] == 'CELL_UNBLOCK':
@@ -61,7 +65,7 @@ def parse_lte(log_path, atoll_data, udrs):
             lte_cell['cellId'] = row['Cell ID']
             lte_cell['eci'] = convert_string_to_num(row['eCI'])
             lte_cell['earfcndl'] = convert_string_to_num(row['Downlink EARFCN'])
-            lte_cell['qRxLevMin'] = int(
+            lte_cell['qRxLevMin'] = str_to_int(
                 row['CELLSEL Minimum required RX level(2dBm)'],
             ) * 2
             lte_cell['latitude'] = None
