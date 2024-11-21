@@ -138,6 +138,17 @@ def parse_wcdma_cells(enm, enm_wcdma_cells, last_parameter, atoll_data, udrs, *a
             }
         elif attr_delimeter in element_val:
             parameter_name, parameter_value = parse_parameter(element_val)
+            if parameter_name == 'MocnCellProfile':
+                if parameter_value == 'Kcell':
+                    parameter_value = None
+                elif parameter_value == 'Sharing2':
+                    parameter_value = '2, 77'
+                elif parameter_value == 'Sharing3':
+                    parameter_value = '1, 2, 77'
+                elif parameter_value == 'Sharing4':
+                    parameter_value = '1, 2'
+                elif parameter_value == 'Veon':
+                    parameter_value = '1'
             cell[parameter_name] = parameter_value
             if parameter_name.lower() in last_parameter.lower():
                 extra_data = get_extra_data(

@@ -40,6 +40,7 @@ def parse_wcdma_cells(zte_cell_data, zte_rnc_data, atoll_data, udrs):
             iublinkref,
             qrxlevmin,
             qqualmin,
+            concatenated_descr,
         ) = cell_params
 
         cell = {
@@ -61,7 +62,7 @@ def parse_wcdma_cells(zte_cell_data, zte_rnc_data, atoll_data, udrs):
             'primaryCpichPower': primary_cpich_power,
             'maximumTransmissionPower': max_tx_power,
             'IubLink': iublinkref.split('=')[-1],
-            'MocnCellProfile': None,
+            'MocnCellProfile': parse_plmn(concatenated_descr),
             'administrativeState': 'UNLOCKED',
             'ip_address': None,
             'vendor': 'ZTE',
@@ -91,3 +92,24 @@ def wcdma_main(atoll_data):
     zte_wcdma_cell_data = select_zte_data('wcdma_cell')
     udrs = read_udrs()
     return parse_wcdma_cells(zte_wcdma_cell_data, zte_rnc_data, atoll_data, udrs)
+
+
+def parse_plmn(concatenated_descr):
+    """
+    Set MocnCellProfile from UPLMNSPECFUNCTION.
+
+    Args:
+        concatenated_descr (str)
+
+    Returns:
+        str
+    """
+    plmn_list = []
+    lst = concatenated_descr.split(",")
+    for el in lst:
+        if el.startswith('MNC'):
+            plmn = el.split('=')[-1]
+            plmn_list.append(plmn)
+    if plmn_list == ['2']:
+        return None
+    return ', '.join(sorted(plmn_list))
