@@ -140,7 +140,7 @@ def select_atoll_data(technology):
 
 lte_insert_sql = """
     INSERT
-        INTO ltecells2
+        INTO ltecells3
     VALUES (
         :subnetwork,
         :enodeb_id,
@@ -164,13 +164,15 @@ lte_insert_sql = """
         :latitude,
         :insert_date,
         :primaryPlmnReserved,
-        :region
+        :region,
+        :txNumber,
+        :rxNumber
     )
 """
 
 wcdma_insert_sql = """
     INSERT
-        INTO wcdmacells2
+        INTO wcdmacells3
     VALUES (
         :operator,
         :rnc_id,
@@ -236,7 +238,7 @@ gsm_insert_sql = """
 
 nr_insert_sql = """
     INSERT
-        INTO nrcells
+        INTO nrcells2
     VALUES (
         :subnetwork,
         :gNBId,

@@ -1,5 +1,6 @@
 import csv
 from datetime import date
+import re
 
 from network_live.ftp import download_ftp_logs
 from network_live.physical_params import add_physical_params
@@ -28,6 +29,20 @@ def str_to_int(value):
     num = float(value)
     return int(num)
 
+
+def parse_tx_rx(mimo):
+    """Parse a string of the format '2T2R' and return a tuple with the counts of Tx and Rx."""
+    if mimo is None:
+        return None, None
+
+    match = re.match(r'(\d+)T(\d+)R', mimo)
+    if not match:
+        return None, None
+
+    t_count, r_count = map(int, match.groups())
+    return t_count, r_count
+
+
 def parse_lte(log_path, atoll_data, udrs):
     """
     Parse lte cells shared by Tele2.
@@ -50,6 +65,11 @@ def parse_lte(log_path, atoll_data, udrs):
                 cell_state = 'UNLOCKED'
             else:
                 cell_state = 'LOCKED'
+
+            try:
+                tx_num, rx_num = parse_tx_rx(row['Cell transmission and reception mode'])
+            except KeyError:
+                tx_num, rx_num = None, None
 
             lte_cell = {
                 'oss': 'Tele2',
@@ -77,6 +97,8 @@ def parse_lte(log_path, atoll_data, udrs):
             lte_cell['physicalLayerCellId'] = row['Physical cell ID']
             lte_cell['cellRange'] = None
             lte_cell['primaryPlmnReserved'] = None
+            lte_cell['txNumber'] = tx_num
+            lte_cell['rxNumber'] = rx_num
 
             cell_with_phys_params = add_physical_params(atoll_data, lte_cell)
             lte_cells.append(

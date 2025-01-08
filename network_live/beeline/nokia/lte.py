@@ -202,6 +202,8 @@ def parse_nokia_xml(xml_path, atoll_data):
         lncel['oss'] = 'Beeline Nokia'
         lncel['cellRange'] = None
         lncel['primaryPlmnReserved'] = None
+        lncel['txNumber'] = None
+        lncel['rxNumber'] = None
         cell_with_phys_params = add_physical_params(atoll_data, lncel)
         lte_nokia_cells.append(
             add_region(cell_with_phys_params, udrs),
