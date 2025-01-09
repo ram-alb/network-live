@@ -203,7 +203,7 @@ def parse_nokia_xml(xml_path, atoll_data):
         lncel['primaryPlmnReserved'] = None
         lncel['txNumber'] = None
         lncel['rxNumber'] = None
-        cell_with_phys_params = add_physical_params(atoll_data, lncel)
+        cell_with_phys_params = add_physical_params(atoll_data, 'LTE', lncel)
         try:
             cell_with_phys_params['region'] = find_region_by_coordinates(
                 (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),

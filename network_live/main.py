@@ -87,7 +87,8 @@ def update_zte(technology):
 def update_nl():
     """Update Network Live database with all cells for given technology."""
     technologies = ['NR', 'LTE', 'WCDMA', 'GSM']
-    atoll_data = {tech: select_atoll_data(tech) for tech in technologies}
+    atoll_data = select_atoll_data()
+    # atoll_data = {tech: select_atoll_data(tech) for tech in technologies}
     results = []
 
     """

@@ -48,7 +48,7 @@ def parse_nr(log_path, atoll_data):
             if header in headers:
                 nr_cell[nl_headears[header]] = cell.value
             if cell.column == sheet.max_column:
-                cell_with_phys_params = add_physical_params(atoll_data, nr_cell)
+                cell_with_phys_params = add_physical_params(atoll_data, 'NR', nr_cell)
                 try:
                     cell_with_phys_params['region'] = find_region_by_coordinates(
                         (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),

@@ -141,7 +141,7 @@ def parse_huawei_wcdma_cells(xml_path, operator, atoll_data):
             'qRxLevMin': int(ucellresel_data[cell_id]['QRXLEVMIN']) * 2,
             'qQualMin': int(ucellresel_data[cell_id]['QQUALMIN']) * 2,
         }
-        cell_with_phys_params = add_physical_params(atoll_data, cell)
+        cell_with_phys_params = add_physical_params(atoll_data, 'WCDMA', cell)
         try:
             cell_with_phys_params['region'] = find_region_by_coordinates(
                 (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),
@@ -281,7 +281,7 @@ def parse_gsm_cells(xml_path, operator, atoll_data):
             'vendor': 'Huawei',
             'insert_date': date.today(),
         }
-        cell_with_phys_params = add_physical_params(atoll_data, cell)
+        cell_with_phys_params = add_physical_params(atoll_data, 'GSM', cell)
         try:
             cell_with_phys_params['region'] = find_region_by_coordinates(
                 (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),

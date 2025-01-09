@@ -35,35 +35,41 @@ def execute_sql(sql_type, sql_command, sql_params=None):
                 return cursor.fetchall()
 
 
-def handle_atoll_data(selected_atoll_data):
-    """
-    Return a dictionary of physical parameters for each cell from atoll data.
-
-    Args:
-        selected_atoll_data (list): A list of tuples with physical parameters
-
-    Returns:
-        dict: a dict where key is the cell name and value is a dict with params
-    """
+def handle_atoll_cell_data(selected_atoll_data):
     atoll_physical_params = {}
     for cell in selected_atoll_data:
         (
             cell_name,
             azimut,
             height,
-            longitude,
-            latitude,
+            lon,
+            lat,
         ) = cell
         atoll_physical_params[cell_name] = {
             'azimut': azimut,
             'height': height,
+            'longitude': lon,
+            'latitude': lat,
+        }
+    return atoll_physical_params
+
+
+def handle_atoll_site_data(selected_atoll_data):
+    atoll_physical_params = {}
+    for site in selected_atoll_data:
+        (
+            site_name,
+            longitude,
+            latitude,
+        ) = site
+        atoll_physical_params[site_name] = {
             'longitude': longitude,
             'latitude': latitude,
         }
     return atoll_physical_params
 
 
-def select_atoll_data(technology):
+def select_atoll_data(technology=None):
     """
     Retrieve cell data with physical params from Atoll for a given technology.
 
@@ -73,6 +79,15 @@ def select_atoll_data(technology):
     Returns:
         dict: a dict where key is the cell name and value is a dict with params
     """
+    site_select = """
+        SELECT
+            atoll_mrat.sites.name,
+            ROUND(atoll_mrat.sites.longitude, 5) AS longitude,
+            ROUND(atoll_mrat.sites.latitude, 5) AS latitude
+        FROM
+            atoll_mrat.sites
+    """
+
     lte_select = """
         SELECT
             atoll_mrat.xgcellslte.cell_id,
@@ -133,9 +148,24 @@ def select_atoll_data(technology):
         'WCDMA': wcdma_select,
         'GSM': gsm_select,
         'NR': nr_select,
+        'sites': site_select,
     }
 
-    return handle_atoll_data(execute_sql('select', sql_selects[technology]))
+    if technology:
+        cell_data = execute_sql('select', sql_selects[technology])
+        site_data = execute_sql('select', sql_selects['sites'])
+        return {
+            technology: handle_atoll_cell_data(cell_data),
+            'sites': handle_atoll_site_data(site_data),
+        }
+
+    atoll_data = {}
+    for tech in sql_selects:
+        if tech == 'sites':
+            atoll_data[tech] = handle_atoll_site_data(execute_sql('select', sql_selects[tech]))
+        else:
+            atoll_data[tech] = handle_atoll_cell_data(execute_sql('select', sql_selects[tech]))
+    return atoll_data
 
 
 lte_insert_sql = """
@@ -287,10 +317,10 @@ def update_network_live(cells, oss, technology):
         'NR': nr_insert_sql,
     }
     network_live_tables = {
-        'LTE': 'ltecells2',
-        'WCDMA': 'wcdmacells2',
+        'LTE': 'ltecells3',
+        'WCDMA': 'wcdmacells3',
         'GSM': 'gsmcells2',
-        'NR': 'nrcells',
+        'NR': 'nrcells2',
     }
 
     delete_sql = "DELETE FROM {table} WHERE oss='{oss}'".format(

@@ -98,7 +98,7 @@ def parse_lte(log_path, atoll_data):
             lte_cell['txNumber'] = tx_num
             lte_cell['rxNumber'] = rx_num
 
-            cell_with_phys_params = add_physical_params(atoll_data, lte_cell)
+            cell_with_phys_params = add_physical_params(atoll_data, 'LTE', lte_cell)
             try:
                 cell_with_phys_params['region'] = find_region_by_coordinates(
                     (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),

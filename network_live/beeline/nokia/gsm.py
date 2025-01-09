@@ -86,7 +86,7 @@ def parse_nokia_gsm_cells(logs_path, atoll_data):
             'insert_date': date.today(),
             'oss': 'Beeline Nokia',
         }
-        cell_with_phys_params = add_physical_params(atoll_data, cell)
+        cell_with_phys_params = add_physical_params(atoll_data, 'GSM', cell)
         try:
             cell_with_phys_params['region'] = find_region_by_coordinates(
                 (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),

@@ -84,7 +84,7 @@ def parse_nokia_wcdma_cells(logs_path, atoll_data):
             'qRxLevMin': int(parse_cell_parameter(cell_tag, 'QrxlevMin')) * 2,
             'qQualMin': int(parse_cell_parameter(cell_tag, 'QqualMin')) * 2,
         }
-        cell_with_phys_params = add_physical_params(atoll_data, cell)
+        cell_with_phys_params = add_physical_params(atoll_data, 'WCDMA', cell)
         try:
             cell_with_phys_params['region'] = find_region_by_coordinates(
                 (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),
