@@ -4,7 +4,7 @@ import re
 
 from network_live.ftp import download_ftp_logs
 from network_live.physical_params import add_physical_params
-from network_live.check_region import read_udrs, add_region
+from point_in_region import find_region_by_coordinates
 
 
 def convert_string_to_num(string_value):
@@ -43,7 +43,7 @@ def parse_tx_rx(mimo):
     return t_count, r_count
 
 
-def parse_lte(log_path, atoll_data, udrs):
+def parse_lte(log_path, atoll_data):
     """
     Parse lte cells shared by Tele2.
 
@@ -88,8 +88,6 @@ def parse_lte(log_path, atoll_data, udrs):
             lte_cell['qRxLevMin'] = str_to_int(
                 row['CELLSEL Minimum required RX level(2dBm)'],
             ) * 2
-            lte_cell['latitude'] = None
-            lte_cell['longitude'] = None
             lte_cell['administrativeState'] = cell_state
             lte_cell['rachRootSequence'] = convert_string_to_num(
                 row['Root sequence index'],
@@ -101,9 +99,14 @@ def parse_lte(log_path, atoll_data, udrs):
             lte_cell['rxNumber'] = rx_num
 
             cell_with_phys_params = add_physical_params(atoll_data, lte_cell)
-            lte_cells.append(
-                add_region(cell_with_phys_params, udrs),
-            )
+            try:
+                cell_with_phys_params['region'] = find_region_by_coordinates(
+                    (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),
+                )
+            except TypeError:
+                cell_with_phys_params['region'] = None
+
+            lte_cells.append(cell_with_phys_params)
     return lte_cells
 
 
@@ -117,13 +120,12 @@ def lte_main(atoll_data):
     Returns:
         list: a list of dicts containing the parameters for each LTE cell
     """
-    udrs = read_udrs()
     log_path = 'logs/tele2/tele2_lte_log.csv'
 
     download_ftp_logs('tele2_lte')
-    cells = parse_lte(log_path, atoll_data, udrs)
+    cells = parse_lte(log_path, atoll_data)
 
     download_ftp_logs('tele2_lte_250')
-    cells += parse_lte(log_path, atoll_data, udrs)
+    cells += parse_lte(log_path, atoll_data)
 
     return cells

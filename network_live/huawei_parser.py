@@ -2,7 +2,7 @@ from datetime import date
 
 from defusedxml import ElementTree
 from network_live.physical_params import add_physical_params
-from network_live.check_region import add_region, read_udrs
+from point_in_region import find_region_by_coordinates
 
 
 def make_tag(tag_name):
@@ -72,7 +72,6 @@ def parse_huawei_wcdma_cells(xml_path, operator, atoll_data):
     Returns:
         list of dicts
     """
-    udrs = read_udrs()
     if operator == 'Tele2':
         oss = operator
     elif operator == 'Beeline':
@@ -143,9 +142,13 @@ def parse_huawei_wcdma_cells(xml_path, operator, atoll_data):
             'qQualMin': int(ucellresel_data[cell_id]['QQUALMIN']) * 2,
         }
         cell_with_phys_params = add_physical_params(atoll_data, cell)
-        wcdma_cells.append(
-            add_region(cell_with_phys_params, udrs),
-        )
+        try:
+            cell_with_phys_params['region'] = find_region_by_coordinates(
+                (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),
+            )
+        except TypeError:
+            cell_with_phys_params['region'] = None
+        wcdma_cells.append(cell_with_phys_params)
 
     return wcdma_cells
 
@@ -219,7 +222,6 @@ def parse_gsm_cells(xml_path, operator, atoll_data):
     Returns:
         list of dicts
     """
-    udrs = read_udrs()
     oss = 'Tele2' if operator == 'Tele2' else 'Beeline Huawei'
     root = ElementTree.parse(xml_path).getroot()
     bsc_name = get_controller_name(root)
@@ -280,7 +282,13 @@ def parse_gsm_cells(xml_path, operator, atoll_data):
             'insert_date': date.today(),
         }
         cell_with_phys_params = add_physical_params(atoll_data, cell)
-        gsm_cells.append(
-            add_region(cell_with_phys_params, udrs),
-        )
+        try:
+            cell_with_phys_params['region'] = find_region_by_coordinates(
+                (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),
+            )
+        except TypeError:
+            cell_with_phys_params['region'] = None
+
+        gsm_cells.append(cell_with_phys_params)
+
     return gsm_cells

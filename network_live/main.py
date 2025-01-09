@@ -90,6 +90,7 @@ def update_nl():
     atoll_data = {tech: select_atoll_data(tech) for tech in technologies}
     results = []
 
+    """
     for enm in ('ENM2', 'ENM4'):
         for enm_tech in technologies:
             try:
@@ -98,6 +99,7 @@ def update_nl():
             except:
                 results.append(f'{enm_tech} {enm} fail')
             print(results[-1])
+    """
 
     """
     try:
@@ -108,6 +110,7 @@ def update_nl():
     print(results[-1])
     """
 
+    """
     for oss_zte_tech in technologies[2:]:
         try:
             zte_cells = zte_main(oss_zte_tech, atoll_data[oss_zte_tech])
@@ -115,6 +118,7 @@ def update_nl():
         except:
             results.append(f'{oss_zte_tech} ZTE fail')
         print(results[-1])
+    """
 
     for tele2_tech in technologies:
         try:
@@ -140,6 +144,6 @@ def update_nl():
             results.append(f'{bee_hua_tech} Beeline Huawei fail')
         print(results[-1])
 
-    to = ['ramil.albakov@kcell.kz']
-    message = '\n'.join(sorted(results))
-    send_email(to, 'Network Live update report', message)
+    # to = ['ramil.albakov@kcell.kz']
+    # message = '\n'.join(sorted(results))
+    # send_email(to, 'Network Live update report', message)

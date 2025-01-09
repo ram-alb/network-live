@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "network_live"}]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.8.1,<3.9"
 python-dotenv = "^1.0.0"
 enm-client-scripting = {path = "../local_packages/enm_client_scripting-1.22.2-py2.py3-none-any.whl"}
 deepmerge = "^1.1.0"
@@ -19,6 +19,7 @@ oracledb = "^2.2.1"
 cx-oracle = "^8.3.0"
 fiona = "1.9.6"
 geopandas = "0.12.2"
+point-in-region = {git = "git@gitlab.kcell.kz:nds-rnpou-rnsd-team/point-in-region.git"}
 
 [tool.poetry.scripts]
 update-enm4-lte = "network_live.scripts.update_enm:update_enm4_lte"

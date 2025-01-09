@@ -10,7 +10,7 @@ from network_live.beeline.nokia.utils import (
 )
 from network_live.ftp import download_ftp_logs
 from network_live.physical_params import add_physical_params
-from network_live.check_region import add_region, read_udrs
+from point_in_region import find_region_by_coordinates
 
 
 def parse_nokia_wcdma_cells(logs_path, atoll_data):
@@ -24,7 +24,6 @@ def parse_nokia_wcdma_cells(logs_path, atoll_data):
     Returns:
         list of dicts
     """
-    udrs = read_udrs()
     uarfcnul = {
         '2965': 2740,
         '2999': 2774,
@@ -86,9 +85,14 @@ def parse_nokia_wcdma_cells(logs_path, atoll_data):
             'qQualMin': int(parse_cell_parameter(cell_tag, 'QqualMin')) * 2,
         }
         cell_with_phys_params = add_physical_params(atoll_data, cell)
-        wcdma_cells.append(
-            add_region(cell_with_phys_params, udrs),
-        )
+        try:
+            cell_with_phys_params['region'] = find_region_by_coordinates(
+                (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),
+            )
+        except TypeError:
+            cell_with_phys_params['region'] = None
+
+        wcdma_cells.append(cell_with_phys_params)
     return wcdma_cells
 
 

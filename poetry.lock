@@ -1025,11 +1025,7 @@ files = [
 ]
 
 [package.dependencies]
-numpy = [
-    {version = ">=1.20.3", markers = "python_version < \"3.10\""},
-    {version = ">=1.21.0", markers = "python_version >= \"3.10\""},
-    {version = ">=1.23.2", markers = "python_version >= \"3.11\""},
-]
+numpy = {version = ">=1.20.3", markers = "python_version < \"3.10\""}
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
 tzdata = ">=2022.1"
@@ -1117,6 +1113,25 @@ files = [
 [package.extras]
 dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
+
+[[package]]
+name = "point-in-region"
+version = "0.1.0"
+description = "determine which user-defined region (UDR) a point belongs to based on its geographical coordinates (latitude and longitude)"
+optional = false
+python-versions = "^3.8.1"
+files = []
+develop = false
+
+[package.dependencies]
+fiona = "1.9.6"
+geopandas = "0.12.2"
+
+[package.source]
+type = "git"
+url = "git@gitlab.kcell.kz:nds-rnpou-rnsd-team/point-in-region.git"
+reference = "HEAD"
+resolved_reference = "c0191725d2de7499a0dd3b80388475e900886b6f"
 
 [[package]]
 name = "pycodestyle"
@@ -1630,5 +1645,5 @@ type = ["pytest-mypy"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.8"
-content-hash = "c9bfa41a689dbbb232424b0de34b61ee5acb1f46d7cac7fb2531b9d4278c84c7"
+python-versions = ">=3.8.1,<3.9"
+content-hash = "2bafef81582acc32158a84063510439cbbf77de97e842b93857cb7d0d0076997"

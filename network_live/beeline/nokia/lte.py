@@ -5,7 +5,7 @@ from datetime import date
 from network_live.beeline.unwanted_cells import unwanted_lte_cells
 from network_live.ftp import download_ftp_logs
 from network_live.physical_params import add_physical_params
-from network_live.check_region import add_region, read_udrs
+from point_in_region import find_region_by_coordinates
 
 
 def read_file(path):
@@ -177,7 +177,6 @@ def parse_nokia_xml(xml_path, atoll_data):
     Returns:
         list of dicts
     """
-    udrs = read_udrs()
     log_lines = read_file(xml_path)
 
     lnbts_params = parse_lnbts_params(log_lines)
@@ -205,9 +204,14 @@ def parse_nokia_xml(xml_path, atoll_data):
         lncel['txNumber'] = None
         lncel['rxNumber'] = None
         cell_with_phys_params = add_physical_params(atoll_data, lncel)
-        lte_nokia_cells.append(
-            add_region(cell_with_phys_params, udrs),
-        )
+        try:
+            cell_with_phys_params['region'] = find_region_by_coordinates(
+                (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),
+            )
+        except TypeError:
+            cell_with_phys_params['region'] = None
+        lte_nokia_cells.append(cell_with_phys_params)
+
     return lte_nokia_cells
 
 

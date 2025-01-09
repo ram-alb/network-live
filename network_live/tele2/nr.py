@@ -3,7 +3,7 @@ from datetime import date
 import openpyxl
 from network_live.ftp import download_ftp_logs, get_date
 from network_live.physical_params import add_physical_params
-from network_live.check_region import read_udrs, add_region
+from point_in_region import find_region_by_coordinates
 
 nl_headears = {
     'NE Name': 'site_name',
@@ -26,7 +26,7 @@ def get_header(sheet, cell):
     return header.value
 
 
-def parse_nr(log_path, atoll_data, udrs):
+def parse_nr(log_path, atoll_data):
     nr_cells = []
     headers = nl_headears.keys()
     work_book = openpyxl.load_workbook(log_path)
@@ -49,21 +49,26 @@ def parse_nr(log_path, atoll_data, udrs):
                 nr_cell[nl_headears[header]] = cell.value
             if cell.column == sheet.max_column:
                 cell_with_phys_params = add_physical_params(atoll_data, nr_cell)
-                nr_cells.append(
-                    add_region(cell_with_phys_params, udrs),
-                )
+                try:
+                    cell_with_phys_params['region'] = find_region_by_coordinates(
+                        (cell_with_phys_params['longitude'], cell_with_phys_params['latitude']),
+                    )
+                except TypeError:
+                    cell_with_phys_params['region'] = None
+
+                nr_cells.append(cell_with_phys_params)
 
     work_book.close()
+
     return nr_cells
 
 
 def nr_main(atoll_data):
-    udrs = read_udrs()
     download_ftp_logs('tele2_nr', is_unzip=False)
 
     date = get_date('tele2')
     log_path = f'logs/tele2/5G_Kcell_CM-{date}.xlsx'
-    cells = parse_nr(log_path, atoll_data, udrs)
+    cells = parse_nr(log_path, atoll_data)
     return cells
 
 
