@@ -145,6 +145,6 @@ def update_nl():
             results.append(f'{bee_hua_tech} Beeline Huawei fail')
         print(results[-1])
 
-    # to = ['ramil.albakov@kcell.kz']
-    # message = '\n'.join(sorted(results))
-    # send_email(to, 'Network Live update report', message)
+    to = ['ramil.albakov@kcell.kz']
+    message = '\n'.join(sorted(results))
+    send_email(to, 'Network Live update report', message)
