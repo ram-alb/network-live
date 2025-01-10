@@ -123,7 +123,7 @@ def update_nl():
 
     for tele2_tech in technologies:
         try:
-            tele2_cells = tele2_main(tele2_tech, atoll_data[tele2_tech])
+            tele2_cells = tele2_main(tele2_tech, atoll_data)
             results.append(update_network_live(tele2_cells, 'Tele2', tele2_tech))
         except:
             results.append(f'{tele2_tech} Tele2 fail')
@@ -131,7 +131,7 @@ def update_nl():
 
     for nokia_tech in technologies[1:]:
         try:
-            bee_nokia_cells = beeline_main('Nokia', nokia_tech, atoll_data[nokia_tech])
+            bee_nokia_cells = beeline_main('Nokia', nokia_tech, atoll_data)
             results.append(update_network_live(bee_nokia_cells, 'Beeline Nokia', nokia_tech))
         except:
             results.append(f'{nokia_tech} Beeline Nokia fail')
@@ -139,7 +139,7 @@ def update_nl():
 
     for bee_hua_tech in technologies[2:]:
         try:
-            bee_hua_cells = beeline_main('Huawei', bee_hua_tech, atoll_data[bee_hua_tech])
+            bee_hua_cells = beeline_main('Huawei', bee_hua_tech, atoll_data)
             results.append(update_network_live(bee_hua_cells, 'Beeline Huawei', bee_hua_tech))
         except:
             results.append(f'{bee_hua_tech} Beeline Huawei fail')
