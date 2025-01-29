@@ -32,3 +32,18 @@ def update_nokia_wcdma():
 def update_nokia_gsm():
     """Update Network Live with Nokia GSM cells."""
     print(update_beeline('Nokia', 'GSM'))
+
+
+def update_zte_gsm():
+    """Update Network Live with ZTE GSM cells."""
+    print(update_beeline('ZTE', 'GSM'))
+
+
+def update_zte_wcdma():
+    """Update Network Live with ZTE WCDMA cells."""
+    print(update_beeline('ZTE', 'WCDMA'))
+
+
+def update_zte_lte():
+    """Update Network Live with ZTE LTE cells."""
+    print(update_beeline('ZTE', 'LTE'))

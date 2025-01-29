@@ -44,7 +44,11 @@ update-beeline-nokia-wcdma = "network_live.scripts.update_beeline:update_nokia_w
 update-beeline-nokia-gsm = "network_live.scripts.update_beeline:update_nokia_gsm"
 update-zte-wcdma = "network_live.scripts.update_zte:update_wcdma"
 update-zte-gsm = "network_live.scripts.update_zte:update_gsm"
+update-beeline-zte-lte = "network_live.scripts.update_beeline:update_zte_lte"
+update-beeline-zte-wcdma = "network_live.scripts.update_beeline:update_zte_wcdma"
+update-beeline-zte-gsm = "network_live.scripts.update_beeline:update_zte_gsm"
 update-network-live = "network_live.scripts.update_nl:main"
+
 
 [tool.poetry.group.dev.dependencies]
 wemake-python-styleguide = "^0.17.0"

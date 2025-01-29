@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from zipfile import ZipFile
 
 import paramiko
-
+import shutil
 
 def download_ftp_data(remote_path, local_path, ftp_type):
     """
@@ -201,3 +201,71 @@ def download_ftp_logs(operator, is_unzip=True):
     if is_unzip:
         unzip_log(local_path)
         os.remove(local_path)
+
+def download_bee250_zte_xml(local_path):
+    """
+    Download Beeline Huawei xml file for 250 project.
+
+    Args:
+        local_path: string
+    """
+    host = os.getenv('FTP_HOST')
+    login = os.getenv('FTP_LOGIN')
+    password = os.getenv('FTP_PASSWORD')
+    date = get_date('beeline')
+    remote_path = '/reporter/beeline/250/CM/{date}'.format(date=date)
+    delete_zte_logs(local_path)
+
+    file_marker = 'UMEID_MRNC_ZTE'
+
+    with paramiko.Transport((host)) as transport:
+        transport.connect(username=login, password=password)
+        with paramiko.SFTPClient.from_transport(transport) as sftp:
+            file_list = sftp.listdir(remote_path)
+            for log in file_list:
+                if 'UMEID_ITBBU_ZTE' in log and log.endswith('.zip'):
+                    remote_log_path = '{remote_path}/{log}'.format(
+                        remote_path=remote_path,
+                        log=log,
+                    )
+                    local_log_path = '{local_path}/{log}'.format(
+                        local_path=local_path,
+                        log=log,
+                    )
+                    sftp.get(remote_log_path, local_log_path)
+                    unzip_log(local_log_path)
+                    os.remove(local_log_path)
+
+
+                if file_marker in log:
+                    remote_log_path = '{remote_path}/{log}'.format(
+                        remote_path=remote_path,
+                        log=log,
+                    )
+                    local_log_path = '{local_path}/{log}'.format(
+                        local_path=local_path,
+                        log=log,
+                    )
+                    sftp.get(remote_log_path, local_log_path)
+
+
+def delete_zte_logs(logs_path):
+    """
+    Delete previous ZTE logs.
+
+    Args:
+        logs_path: string
+    """
+    if not os.path.exists(logs_path):
+        return
+    
+    files = os.listdir(logs_path)
+    if not files:
+        return
+    
+    for item in os.listdir(logs_path):
+        item_path = os.path.join(logs_path, item)
+        if os.path.isfile(item_path):
+            os.remove(item_path)
+        elif os.path.isdir(item_path):
+            shutil.rmtree(item_path)

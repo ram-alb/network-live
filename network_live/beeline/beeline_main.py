@@ -1,6 +1,6 @@
 from network_live.beeline.huawei.huawei_main import huawei_main
 from network_live.beeline.nokia.nokia_main import nokia_main
-
+from network_live.beeline.zte.zte_main import beeline_zte_main
 
 def beeline_main(vendor, technology, atoll_data):
     """
@@ -17,6 +17,10 @@ def beeline_main(vendor, technology, atoll_data):
     main_funcs = {
         'Huawei': huawei_main,
         'Nokia': nokia_main,
+        'ZTE': beeline_zte_main,
     }
 
-    return main_funcs[vendor](technology, atoll_data)
+    if vendor == 'ZTE':
+        return main_funcs[vendor](technology)
+    else:
+        return main_funcs[vendor](technology, atoll_data)

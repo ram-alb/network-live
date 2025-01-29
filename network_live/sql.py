@@ -1,7 +1,7 @@
 import os
-
+from dotenv import load_dotenv
 import oracledb
-
+import pandas as pd
 
 def execute_sql(sql_type, sql_command, sql_params=None):
     """
@@ -22,6 +22,8 @@ def execute_sql(sql_type, sql_command, sql_params=None):
         port=os.getenv('ATOLL_PORT'),
         service_name=os.getenv('SERVICE_NAME'),
     )
+
+
     with oracledb.connect(dsn) as connection:
         with connection.cursor() as cursor:
             if sql_type == 'delete':
@@ -337,3 +339,58 @@ def update_network_live(cells, oss, technology):
         print(err_obj.message)
         return f'{technology} {oss} Fail'
     return f'{technology} {oss} Success'
+
+
+def get_atoll_data():
+    """
+    Retrieve cell data with physical params from Atoll for a given technology.
+
+    Args:
+        technology (str): a string representing the RAN technology
+
+    Returns:
+        dict: a dict where key is the cell name and value is a dict with params
+    """
+
+    lte_select = """
+        SELECT
+            atoll_mrat.xgcellslte.cell_id,
+            atoll_mrat.xgtransmitters.height
+        FROM atoll_mrat.xgtransmitters
+            INNER JOIN atoll_mrat.sites
+                ON atoll_mrat.xgtransmitters.site_name = atoll_mrat.sites.name
+            INNER JOIN atoll_mrat.xgcellslte
+                ON atoll_mrat.xgtransmitters.tx_id = atoll_mrat.xgcellslte.tx_id
+    """
+
+    wcdma_select = """
+        SELECT
+            atoll_mrat.ucells.cell_id,
+            atoll_mrat.utransmitters.height
+        FROM atoll_mrat.utransmitters
+            INNER JOIN atoll_mrat.sites
+                ON atoll_mrat.utransmitters.site_name = atoll_mrat.sites.name
+            INNER JOIN atoll_mrat.ucells
+                ON atoll_mrat.utransmitters.tx_id = atoll_mrat.ucells.tx_id
+    """
+
+    gsm_select = """
+        SELECT
+            atoll_mrat.gtransmitters.tx_id,
+            atoll_mrat.gtransmitters.height,
+            atoll_mrat.gtransmitters.bsc
+        FROM atoll_mrat.gtransmitters
+            INNER JOIN atoll_mrat.sites
+                ON atoll_mrat.gtransmitters.site_name = atoll_mrat.sites.name
+    """
+
+    sql_selects = {
+        'LTE': lte_select,
+        'WCDMA': wcdma_select,
+        'GSM': gsm_select,
+    }
+    
+    return {
+        tech: pd.DataFrame(data=execute_sql('select', query))
+        for tech, query in sql_selects.items()
+    }
