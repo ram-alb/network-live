@@ -121,29 +121,29 @@ def update_nl():
         print(results[-1])
     """
 
-    # for tele2_tech in technologies:
-    #     try:
-    #         tele2_cells = tele2_main(tele2_tech, atoll_data)
-    #         results.append(update_network_live(tele2_cells, 'Tele2', tele2_tech))
-    #     except:
-    #         results.append(f'{tele2_tech} Tele2 fail')
-    #     print(results[-1])
+    for tele2_tech in technologies:
+        try:
+            tele2_cells = tele2_main(tele2_tech, atoll_data)
+            results.append(update_network_live(tele2_cells, 'Tele2', tele2_tech))
+        except:
+            results.append(f'{tele2_tech} Tele2 fail')
+        print(results[-1])
 
-    # for nokia_tech in technologies[1:]:
-    #     try:
-    #         bee_nokia_cells = beeline_main('Nokia', nokia_tech, atoll_data)
-    #         results.append(update_network_live(bee_nokia_cells, 'Beeline Nokia', nokia_tech))
-    #     except:
-    #         results.append(f'{nokia_tech} Beeline Nokia fail')
-    #     print(results[-1])
+    for nokia_tech in technologies[1:]:
+        try:
+            bee_nokia_cells = beeline_main('Nokia', nokia_tech, atoll_data)
+            results.append(update_network_live(bee_nokia_cells, 'Beeline Nokia', nokia_tech))
+        except:
+            results.append(f'{nokia_tech} Beeline Nokia fail')
+        print(results[-1])
 
-    # for bee_hua_tech in technologies[2:]:
-    #     try:
-    #         bee_hua_cells = beeline_main('Huawei', bee_hua_tech, atoll_data)
-    #         results.append(update_network_live(bee_hua_cells, 'Beeline Huawei', bee_hua_tech))
-    #     except:
-    #         results.append(f'{bee_hua_tech} Beeline Huawei fail')
-    #     print(results[-1])
+    for bee_hua_tech in technologies[2:]:
+        try:
+            bee_hua_cells = beeline_main('Huawei', bee_hua_tech, atoll_data)
+            results.append(update_network_live(bee_hua_cells, 'Beeline Huawei', bee_hua_tech))
+        except:
+            results.append(f'{bee_hua_tech} Beeline Huawei fail')
+        print(results[-1])
     for technology in technologies:
         try:
             zte_beeline_cells = beeline_zte_main(technology)
@@ -151,7 +151,7 @@ def update_nl():
         except:
             results.append(f'{technology} Beeline ZTE fail')
         print(results[-1])
-        
-    # to = ['ramil.albakov@kcell.kz']
-    # message = '\n'.join(sorted(results))
-    # send_email(to, 'Network Live update report', message)
+
+    to = ['ramil.albakov@kcell.kz', 'abzal.nashauov@kcell.kz']
+    message = '\n'.join(sorted(results))
+    send_email(to, 'Network Live update report', message)
