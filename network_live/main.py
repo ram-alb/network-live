@@ -144,7 +144,7 @@ def update_nl():
         except:
             results.append(f'{bee_hua_tech} Beeline Huawei fail')
         print(results[-1])
-    for technology in technologies:
+    for technology in technologies[1:]:
         try:
             zte_beeline_cells = beeline_zte_main(technology)
             results.append(update_network_live(zte_beeline_cells, 'Beeline ZTE', technology))
