@@ -111,6 +111,13 @@ def parse_wcdma_parameters(xml_file_path):
     cells_3g = [tuple(None if pd.isna(value) else value for value in row) for row in df_result_wcdma.to_numpy()]
     return cells_3g
 
+def get_earfcn(in_mhz):
+    if 1800 > in_mhz > 790:
+        return 6200
+    elif 2100 > in_mhz > 1800:
+        return 1302
+    elif in_mhz > 2100:
+        return 125 
 
 def parse_gsm_parameters(xml_file_path):
     if os.path.isdir(xml_file_path):
@@ -218,11 +225,11 @@ def parce_lte_parameters(csv_file_path, ip_file_path):
     df_merge_lte = df_filtered_lte.merge(df_ip, on="ManagedElement", how = "left")
 
     df_merge_lte["region"] = df_merge_lte.apply(lambda row: find_region_by_coordinates((row["longitude"], row["latitude"])), axis=1)
-    df_merge_lte["cellState"] = df_merge_lte.apply(lambda row: "ACTIVE" if row["adminState"] == 0 else "HALTED", axis=1)
+    df_merge_lte["cellState"] = df_merge_lte.apply(lambda row: "UNLOCKED" if row["adminState"] == 0 else "LOCKED", axis=1)
     df_merge_lte["ManagedElement"] = df_merge_lte["ManagedElement"].astype(int)
     df_merge_lte["cellLocalId"] = df_merge_lte["cellLocalId"].astype(int)
     df_merge_lte["eci"] = df_merge_lte.apply(lambda row: row["ManagedElement"] * 256 + row["cellLocalId"], axis=1)
-
+    df_merge_lte["EARFCN"] = df_merge_lte.apply(lambda row: get_earfcn(row["earfcnDl"]), axis = 1)
     df_merge_lte = df_merge_lte.assign(
         SUBNETWORK = "Beeline",
         Vendor = "ZTE",
@@ -246,7 +253,7 @@ def parce_lte_parameters(csv_file_path, ip_file_path):
         "tac",
         "cellLocalId",
         "eci",
-        "earfcnDl",
+        "EARFCN",
         "ueAbsoluteSignalThr",
         "cellState",
         "RACHROOTSEQUENCE",
@@ -265,6 +272,5 @@ def parce_lte_parameters(csv_file_path, ip_file_path):
         "TXNUMBER",
         "RXNUMBER"
         ]]
-    df_result_lte.to_excel("result4g.xlsx")
     cells_4g = [tuple(None if pd.isna(value) else value for value in row) for row in df_result_lte.to_numpy()]
     return cells_4g

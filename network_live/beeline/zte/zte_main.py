@@ -6,7 +6,7 @@ load_dotenv()
 
 
 def beeline_zte_main(technology=None):
-    logs_path = 'logs/beeline/zte'
+    logs_path = 'logs/beeline'
     download_bee250_zte_xml(logs_path)
     log_name = next((f for f in os.listdir(logs_path) if f.startswith('UMEID_MRNC')), None)
     xml_path = f'{logs_path}/{log_name}'

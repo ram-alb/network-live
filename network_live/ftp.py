@@ -36,9 +36,12 @@ def delete_old_logs(logs_path):
     Args:
         logs_path: string
     """
-    for log in os.listdir(logs_path):
-        os.remove('{logs_path}/{log}'.format(logs_path=logs_path, log=log))
-
+    for item in os.listdir(logs_path):
+        item_path = os.path.join(logs_path, item)
+        if os.path.isfile(item_path):
+            os.remove(item_path)
+        elif os.path.isdir(item_path):
+            shutil.rmtree(item_path)
 
 def download_oss_logs(technology):
     """
