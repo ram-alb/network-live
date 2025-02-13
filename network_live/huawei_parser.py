@@ -47,15 +47,18 @@ def parse_moi_parameters(root, attribute_type, needed_params):
         dict
     """
     moi_parameters = {}
-    for moi_tag in root.iter(make_tag('moi')):
-        if moi_tag.get('{http://www.w3.org/2001/XMLSchema-instance}type') != attribute_type:
-            continue
+    for subsession in root.findall(make_tag('subsession')):
+        for ne_tag in subsession.findall(make_tag('NE')):
+            rnc_name = ne_tag.get('neid')
+            for moi_tag in ne_tag.iter(make_tag('moi')):
+                if moi_tag.get('{http://www.w3.org/2001/XMLSchema-instance}type') != attribute_type:
+                    continue
 
-        attributes = moi_tag.find(make_tag('attributes'))
-        cell_id = attributes.find(make_tag('CELLID')).text
-        moi_parameters[cell_id] = {}
-        for parameter in needed_params:
-            moi_parameters[cell_id][parameter] = attributes.find(make_tag(parameter)).text
+                attributes = moi_tag.find(make_tag('attributes'))
+                cell_id = attributes.find(make_tag('CELLID')).text
+                moi_parameters[cell_id] = {'rnc': rnc_name}
+                for parameter in needed_params:
+                    moi_parameters[cell_id][parameter] = attributes.find(make_tag(parameter)).text
 
     return moi_parameters
 
@@ -78,7 +81,6 @@ def parse_huawei_wcdma_cells(xml_path, operator, atoll_data):
         oss = 'Beeline Huawei'
 
     root = ElementTree.parse(xml_path).getroot()
-    rnc_name = get_controller_name(root)
 
     ucell_params = [
         'LOGICRNCID',
@@ -118,7 +120,7 @@ def parse_huawei_wcdma_cells(xml_path, operator, atoll_data):
             'operator': operator,
             'oss': oss,
             'rnc_id': ucell_data[cell_id]['LOGICRNCID'],
-            'rnc_name': rnc_name,
+            'rnc_name': ucell_data[cell_id]['rnc'],
             'site_name': ucell_data[cell_id]['NODEBNAME'],
             'cell_name': ucell_data[cell_id]['CELLNAME'],
             'cId': cell_id,
