@@ -59,7 +59,7 @@ def parse_wcdma_parameters(xml_file_path):
     df_merge_wcdma = df_merge_wcdma.merge(df_data_3g, on = "UTRANCELL", how = "left")
     
     df_merge_wcdma["region"]= df_merge_wcdma.apply(lambda row: find_region_by_coordinates((row["longitude"], row["latitude"])), axis=1)
-    df_merge_wcdma["cellState"] = df_merge_wcdma.apply(lambda row: "ACTIVE" if row["AdmState"] == 'Unblock' else "HALTED", axis=1)
+    df_merge_wcdma["cellState"] = df_merge_wcdma.apply(lambda row: "UNLOCKED" if row["AdmState"] == 'Unblock' else "LOCKED", axis=1)
     
     df_merge_wcdma = df_merge_wcdma.applymap(lambda x: None if pd.isna(x) else x)
     
