@@ -42,6 +42,7 @@ def parse_nr(log_path, atoll_data):
             'oss': 'Tele2',
             'ssbFrequency': None,
             'insert_date': date.today(),
+            'sharing_type': None,
         }
         for cell in row:
             header = get_header(sheet, cell)

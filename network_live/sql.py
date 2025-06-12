@@ -295,7 +295,8 @@ nr_insert_sql = """
         :latitude,
         :insert_date,
         :ssbFrequency,
-        :region
+        :region,
+        :sharing_type
     )
 """
 
